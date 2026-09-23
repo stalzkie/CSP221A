@@ -1,0 +1,3 @@
+Question: Why my averages/flags count as "vectorized", and what would break that if you weren't careful
+
+Vectorization lets numpy process all laps time rather than using loops. Instead of manually stepping through every value and computing it individually, the whole collection of numbers underlying in the numerical library where it computes all the results together internally. For example using mean calculates each athletes average while np.where classifies all laps whether it's SLOW or FAST. And if you are not careful like wrong array shapes, threshold or different units can result to incorrect or errors.
