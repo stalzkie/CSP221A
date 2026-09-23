@@ -1,6 +1,9 @@
 # Instructor-only answer keys — never commit these to a student-facing repo
 answer_key.py
 
+# Instructor-only Canvas assignment page text — not for the student-facing repo
+CANVAS_ASSIGNMENT.md
+
 __pycache__/
 *.pyc
 .DS_Store
