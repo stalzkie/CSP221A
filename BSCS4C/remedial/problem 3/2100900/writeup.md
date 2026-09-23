@@ -1,0 +1,3 @@
+average_times() and flag_slow_laps() are considered as vectorized as they perform operations on numpy arrays all at once, avoiding the need to use a for loop, which has to go through each number one by one. 
+
+However, if not careful, empty  and incomplete rows can completely break everything as it destroys the 2D structure that numpy requires. Numpy collapses incomplete rows into a 1D array, for example, and will cause a crash.
