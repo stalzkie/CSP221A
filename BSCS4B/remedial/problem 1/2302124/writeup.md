@@ -1,0 +1,3 @@
+i created build catalog by first creating two lists to store the books, 1 for the no issue books and another for thos with issue. 
+after that i created a loop to create per row then inside the loop i created a try/except block that checks per row in the data the books
+if they encounter an error or not. if they dont they get appended to the book array, else it gets caught in the exception gets appended to the failure array. the books count as failures if they either have an invalid year(should be between 1450 to 2026) or an invalid copy value(should be a non-negative integer)
