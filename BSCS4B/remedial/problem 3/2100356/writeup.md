@@ -1,0 +1,5 @@
+So far I have finished the checking part of my tracker. I made two custom errors, CycleCountMismatchError and EmptyCycleLogError, and I raise them inside build_tracker when a row has a problem. R-04 has an empty list, so it gets the empty log error. R-03 has only 2 cycles instead of 3, so it gets the mismatch error. Each row is checked in its own try block, so when a row fails I catch the error, print the message, save the row and the reason in failures, and continue to the next robot instead of crashing the whole batch. The good rows are the ones I keep.
+
+I do this cleaning first because the bad rows would break the array later. If R-03 and R-04 were still there, the cycle lists would have different lengths, and np.array() could not build one clean 2D array out of them. That would also break the vectorized math I still have to add, like mean(axis=1) for the averages and np.where() for the flags, because those work on the whole array at once and need the array to be complete and even.
+
+So the skipping has to happen before the tracker is built. The vectorized part is what I am working on next.
