@@ -1,0 +1,1 @@
+Using a generator so that lines are checked one at a time instead of building the whole list in memory at once because its more efficient for large data. A line is malformed if it doesn't split into exactly 3 parts, or if the shift isn't morning, afternoon or evening.
