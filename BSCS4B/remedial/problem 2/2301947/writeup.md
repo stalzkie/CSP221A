@@ -1,0 +1,2 @@
+Answer:
+This is because in the instructions, it explicitly says that the weight is the main value to validate in this cleaning process. That means that unparseable values that is in the weight column should be dropped because you cannot really convert the text "heavy" into something numeric or like a number and also "None" has no weight value at all. You cannot really assume a value to it. Filling something might make the data inaccurate. Dropping them keeps the dataset clean.
