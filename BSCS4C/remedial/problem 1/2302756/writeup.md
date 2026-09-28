@@ -1,0 +1,3 @@
+In the inventory building function, I iterated through every dictionary row in the raw data list and passed the fields to the product constructor. I wrapped that object creation step inside a try-except block specifically catching the inventory error base class so that any validation problems would not interrupt or crash the program.
+
+I treated a record as a failure whenever an inventory error was triggered during construction. This occurs when an item has a price that is negative, zero, or non-numeric, or when a quantity is negative or not a whole number. These invalid rows were collected into the failures list along with the original dictionary data and the error reason.
