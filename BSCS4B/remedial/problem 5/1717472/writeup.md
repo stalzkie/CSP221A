@@ -1,0 +1,3 @@
+I decided that a row should only be dropped if the problem makes the important data unusable. The E04 row has "N/A" as hours, so after converting the hours column to numeric, it becomes a missing value. Since hours completed is the main metric used to determine the employee's status, that row cannot be categorized correctly and should be removed.
+
+The other issues were still fixable, so the rows were kept. Extra spaces and different capitalization in employee IDs were cleaned using strip() and lower(). The duplicate E01 was handled by keeping the first occurrence. The modules column was still usable since the text could be split, cleaned, and converted into a set.
