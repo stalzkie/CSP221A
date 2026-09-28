@@ -1,0 +1,5 @@
+For build_inventory, there were two main requirements: Products and Failures. Failures are those that do not meet the criteria, namely: Price must not be negative, Price must be greater than zero, and Quantity must be greater than or equal to zero. Products on the other hand are those that successfully meet the criteria.
+
+As for the structure, I first created empty lists for each and then iterated over each row of raw_raws. If a product does not contain any error, it gets appended to Products. If an error is caught however using InventoryError, the product gets added to Failures list where the whole original row and the corresponding error it received is logged. Using InventoryError here instead of InvalidPriceError/InvalidQuantityError is the way to go since it captures both price and quantity error. InventoryError is the base custom exception class that InvalidPriceError/InvalidQuantityError inherits from. Then, InvalidPriceError/InvalidQuantityError has their own message that gets passed on depending if either Price or Quantity is an error.
+
+Lastly, the Products and Failures list is returned at the end of build_inventory.
