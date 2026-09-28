@@ -1,0 +1,1 @@
+for me vectorized means that the average_cycle_time and flag_long_cycles is process the whole array direct using the numpy operate which is mean axis=1 and np.where for skipping manual for loops, so to make it fast computations using compiled C instead of pyhton so it will stays more efficient even with the large datasets unlike the loop which slow down noticeably.
