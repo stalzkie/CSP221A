@@ -1,0 +1,11 @@
+Upon reading the specifications, I first laid out the sections I needed fundamentally; being, the TicketFormatError class, and the parse_ticket_line and clean_lines functions.
+
+I wrote parse_ticket_line and TicketFormatError first in tandem; because the specifications listed that TicketFormatError is raised for two different scenarios, and the skipped line output requires listing the reason, I opted to use a dict to determine the output message via error codes. I added the line split, both errors as well as their contingencies in TicketFormatError, and finally the tag parsing into a set. This fulfills Rules 1, 2, 3, and 4.
+
+I then began on the logging decorator; I wrote a simple function that logged before and after an attempt is completed, listing the current line being processed. As per instruction, I also included @wraps(func), retaining parse_ticket_line's name when inspected. This fulfills Rule 5.
+
+Moving on to clean_tickets; it was unfortunately not possible to maintain a loop *within* a try block. as if an exception is caught, the act of switching to the except block breaks the loop entirely. In this case, the generator will process successful tickets *until* it hits a malformed raw line; in which case, TicketFormatError will be raised, the function will escape the loop to the except block, and conclude the function. I opted to instead wrap the try structure *inside* a loop; this way, it will repeat the try structure per line. This fulfills Rule 7.
+
+Creating count_by_priority, it uses .get() to acquire the priority of each ticket dict; and will add a count to it's own dict, before returning a dict of a full count. This fulfills Rule 8.
+
+Lastly, I created tag_search, which creates a list via list comprehension using the ticket list and a set of one or multiple search words in a set. Within the comprehension is a condition which checks for the boolean value of if the search set and the inspected ticket's set of tags has an intersection; if it does, the ticket is added to the list, and not if otherwise.
