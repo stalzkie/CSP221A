@@ -1,0 +1,13 @@
+Using a generator in clean_tickets allows the script to
+process support tickets lazily one at a time rather than
+loading an entire data set into the memory. This reduces
+memory usage and prevents system crashses when handling
+massive log files.
+
+In this script, a ticket line is considered "Malformed" if
+it fails to split into exactly three separated parts:
+The ID (T001,T002,T003,T004,T005), priority, and tags
+or contains an invalid priority outside of "low, medium or high".
+When a line breaks these rules, a custom error is raised
+(TicketFormatError), allowing the generator to safely log
+the issue, skip the bad line, and keep the code running.

@@ -1,0 +1,85 @@
+import functools
+import logging
+
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+
+#1 Customer Exception Error
+class TicketFormatError(Exception):
+    pass
+
+#2. Custom Decorator
+def log_parsing(func):
+    @functools.wraps(func)
+    def wrapper(line):
+        logging.info(f"Parsing line: {line.strip()}")
+        return func(line)
+    return wrapper
+
+#3. Parser Function
+@log_parsing
+def parse_ticket_line(line):
+    parts = line.strip().split('|')
+
+    if len(parts) !=3:
+        raise TicketFormatError("Line does not have exactly 3 parts.")
+
+    ticket_id, priority, tags_str = parts
+
+    if priority not in {"low", "medium", "high"}:
+        raise TicketFormatError(f"Invalid priority '{priority}'.")
+
+    tags = set(tag.strip().lower() for tag in tags_str.split(',') if tag.strip())
+
+    return {"id": ticket_id, "priority": priority, "tags": tags}
+
+#4. Generator
+def clean_tickets(lines):
+    for line in lines:
+        try:
+            yield parse_ticket_line(line)
+        except TicketFormatError as error:
+            print (f"Skipped line -> reason: {error}")
+
+#5. Summarizer
+def count_by_priority(tickets):
+    counts = {}
+    for ticket in tickets:
+        prio = ticket["priority"]
+        counts[prio] = counts.get(prio, 0) + 1
+    return counts
+
+#6. Execution Flow
+if __name__ == "__main__":
+    raw_lines = [
+        "T001|high|login,auth",
+        "T002|invalid|ui", #Malformed: Bad Priority
+        "T003|medium|payments,login",
+        "T004|low", #Malformed: Has Missing Parts
+        "T005|low|payments,settings"
+    ]
+
+    target_tags = {"login", "payments"}
+    valid_tickets = []
+    tagged_ids = []
+
+    try:
+        for ticket in clean_tickets(raw_lines):
+            valid_tickets.append(ticket)
+
+            if ticket["tags"] & target_tags:
+                tagged_ids.append(ticket["id"])
+
+        priority_counts = count_by_priority(valid_tickets)
+
+    except Exception as e:
+        print (f"An unexpected error occured: {e}")
+
+    else:
+        print (f"\nProcessed {len(valid_tickets)} valid tickets.")
+        print (f"Priority counts: {priority_counts}")
+
+        tagged_ids.sort()
+        print (f"Tickets tagged with login or payments: {tagged_ids}")
+
+    finally:
+        print ("Tiage pass complete.")
