@@ -1,0 +1,1446 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Student guide to the CSP221A final development project: sprints, DevOps track, free hosting, rubrics, and curated videos.">
+<title>CSP221A Final Project</title>
+<style>
+/* base reset (the artifact host used to supply this) */
+html{color-scheme:light}
+:root{padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* layout: a macOS-style desktop. a thin menu bar on top, floating app windows around a big lowercase name, then every section of the guide lives inside its own window. */
+:root{
+  --desk:#eeeff2; --win:#ffffff; --win-2:#f6f7f9; --bar:#f4f5f7; --line:#e1e3e8; --ink:#141518; --muted:#686c76;
+  --accent:#2b72ee; --accent-soft:#e6efff; --btn-top:#7cb9ff; --btn-bot:#2b72ee; --on-accent:#ffffff;
+  --folder:#58b2ee; --folder-2:#94d3f8; --screen-a:#17213a; --screen-b:#2f63c9;
+  --ok:#1f9d55; --warn:#c77d00; --bad:#d33f3f;
+  --tl-r:#ff5f57; --tl-y:#febc2e; --tl-g:#28c840; --sticker:#e5484d;
+  --shadow:0 1px 0 rgba(15,20,35,.04), 0 14px 34px -16px rgba(15,20,40,.28);
+  --font:'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:'Geist Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+/* light mode only: the dark palette was removed on purpose, so the page looks the
+   same for every visitor regardless of their system setting. */
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:56px}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{animation:none!important; transition:none!important} }
+body{background:var(--desk); color:var(--ink); font-family:var(--font); font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:6px}
+h1,h2,h3,h4{text-wrap:balance; margin:0; line-height:1.15}
+p{margin:0}
+code, .mono{font-family:var(--mono); font-size:.88em}
+
+/* menu bar */
+.menubar{position:sticky; top:env(safe-area-inset-top,0px); z-index:50; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:12px; height:36px; padding-inline:16px; background:color-mix(in srgb, var(--bar) 86%, transparent); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid var(--line); font-size:12.5px}
+.menubar nav{display:flex; gap:14px; align-items:center; min-width:0; overflow:hidden; white-space:nowrap}
+.menubar nav a{color:var(--muted); text-decoration:none}
+.menubar nav a:hover{color:var(--ink)}
+.menubar .brand{color:var(--ink); font-weight:600}
+.menubar .glyph{display:flex; color:var(--ink)}
+.menubar .right{display:flex; justify-content:flex-end; gap:14px; align-items:center; white-space:nowrap}
+.menubar .clock{color:var(--muted); font-variant-numeric:tabular-nums}
+.menubar .cta{color:var(--accent); text-decoration:none; font-weight:500}
+@media (max-width:760px){ .menubar nav a:not(.brand){display:none} .menubar .clock{display:none} }
+
+.wrap{max-width:1100px; margin:0 auto; padding-inline:20px}
+
+/* window chrome */
+.win{background:var(--win); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); overflow:hidden; min-width:0}
+.win-bar{display:flex; align-items:center; gap:10px; height:30px; padding-inline:12px; background:var(--win-2); border-bottom:1px solid var(--line)}
+.dots{display:flex; gap:6px; flex:none}
+.dots i{width:10px; height:10px; border-radius:50%; display:block; background:var(--tl-r)}
+.dots i:nth-child(2){background:var(--tl-y)} .dots i:nth-child(3){background:var(--tl-g)}
+.win-title{font-family:var(--mono); font-size:11.5px; color:var(--muted); margin-inline:auto; padding-right:46px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.win-body{padding:20px}
+.cap{display:block; text-align:center; font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:6px}
+
+/* hero */
+.hero{position:relative; overflow-x:clip; padding-block:72px 40px}
+.hero-center{position:relative; z-index:2; text-align:center; display:flex; flex-direction:column; align-items:center; gap:14px}
+.eyebrow-pill{display:inline-block; font-family:var(--mono); font-size:11px; color:var(--muted); border:1px solid var(--line); background:var(--win); border-radius:999px; padding:2px 10px}
+.hero h1{font-size:clamp(58px, 12vw, 132px); font-weight:600; letter-spacing:-.05em; line-height:.95}
+.hero .sub{font-size:clamp(16px, 2.2vw, 19px); font-weight:500}
+.hero .fine{font-size:12px; color:var(--muted)}
+.btns{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:6px}
+.btn{display:inline-flex; align-items:center; gap:8px; padding:8px 18px; border-radius:999px; font-weight:500; font-size:14px; text-decoration:none; border:1px solid var(--line)}
+.btn-primary{color:var(--on-accent); background:linear-gradient(180deg, var(--btn-top), var(--btn-bot)); border-color:var(--btn-bot); box-shadow:inset 0 1px 0 rgba(255,255,255,.45), 0 6px 14px -6px var(--btn-bot)}
+.btn-ghost{color:var(--ink); background:linear-gradient(180deg, var(--win), var(--win-2)); box-shadow:inset 0 1px 0 rgba(255,255,255,.6), var(--shadow)}
+.btn:hover{filter:brightness(1.05)}
+
+.float{position:absolute; z-index:1}
+.kao{font-family:var(--mono); font-size:15px; color:var(--ink); white-space:nowrap}
+.term{background:var(--screen-a); color:#d7e3ff; font-family:var(--mono); font-size:11.5px; line-height:1.7; padding:12px 14px}
+.term .ok{color:#6ee29a} .term .run{color:#ffd166} .term .dim{color:#8b9ab8}
+.sticker{transform:rotate(-7deg); background:var(--sticker); border-radius:8px; padding:4px; box-shadow:var(--shadow); width:132px}
+.sticker b{display:block; color:#fff; font-size:13px; letter-spacing:.12em; text-align:center; line-height:1.4}
+.sticker small{display:block; color:#fff; font-size:9px; text-align:center; letter-spacing:.06em}
+.sticker span{display:block; background:#fff; color:#1b1d22; border-radius:4px; text-align:center; font-family:var(--mono); font-size:13px; padding:6px 0; margin-top:3px}
+.bubble{display:inline-block; max-width:260px; padding:9px 15px; border-radius:20px 20px 4px 20px; color:var(--on-accent); background:linear-gradient(180deg, var(--btn-top), var(--btn-bot)); box-shadow:inset 0 1px 0 rgba(255,255,255,.4), var(--shadow); font-size:15px; line-height:1.35}
+.bubble.left{border-radius:20px 20px 20px 4px; background:var(--win); color:var(--ink); border:1px solid var(--line)}
+.folder{display:flex; flex-direction:column; align-items:center; gap:4px; text-decoration:none}
+.folder-ico{width:52px; height:40px; position:relative; border-radius:3px 6px 6px 6px; background:linear-gradient(180deg, var(--folder-2), var(--folder)); margin-top:7px}
+.folder-ico::before{content:""; position:absolute; left:0; top:-7px; width:22px; height:9px; border-radius:4px 4px 0 0; background:var(--folder)}
+.folder span{font-family:var(--mono); font-size:11px; color:var(--ink); background:var(--win); padding:0 6px; border-radius:4px}
+.mini-board{display:grid; grid-template-columns:repeat(3,1fr); gap:6px; padding:10px; font-size:10.5px}
+.mini-board div{display:flex; flex-direction:column; gap:5px}
+.mini-board h5{margin:0; font-size:10px; font-weight:600; color:var(--muted); text-transform:lowercase}
+.mini-board p{background:var(--win-2); border:1px solid var(--line); border-radius:5px; padding:3px 6px; line-height:1.3}
+.envfile{font-family:var(--mono); font-size:11.5px; line-height:1.8; padding:10px 14px}
+.envfile em{color:var(--muted); font-style:normal}
+
+@media (max-width:1139px){ .float{display:none} .hero{padding-block:48px 28px} }
+@media (min-width:1140px){ .roadmap{margin-top:84px} }
+
+/* hero strip below: little desktop pieces for phones */
+.phone-strip{display:none; justify-content:center; gap:18px; flex-wrap:wrap; margin-top:26px}
+@media (max-width:1139px){ .phone-strip{display:flex} }
+
+/* roadmap window */
+.roadmap{margin-top:48px}
+.road{display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:10px}
+.phase{border:1px solid var(--line); border-radius:10px; padding:14px; background:var(--win-2); display:flex; flex-direction:column; gap:6px; text-decoration:none; color:var(--ink)}
+.phase:hover{border-color:var(--accent)}
+.phase .wk{font-family:var(--mono); font-size:11px; color:var(--muted)}
+.phase h3{font-size:16px; font-weight:600}
+.phase p{font-size:13px; color:var(--muted); line-height:1.45}
+.phase.final{background:var(--accent-soft); border-color:var(--accent)}
+.gates{display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:10px; margin-top:10px; font-family:var(--mono); font-size:11px; color:var(--muted)}
+.gates span{display:flex; align-items:center; gap:6px}
+.gates span::before{content:""; width:8px; height:8px; transform:rotate(45deg); background:var(--muted); flex:none}
+.gates span.none::before{display:none}
+@media (max-width:760px){ .road{grid-template-columns:1fr} .gates{display:none} .phase .gate-m{display:block} }
+.gate-m{display:none; font-family:var(--mono); font-size:11px; color:var(--accent)}
+
+/* sections */
+section{padding-block:72px 8px}
+.sec-head{display:flex; flex-direction:column; align-items:center; text-align:center; gap:12px; margin-bottom:34px}
+.sec-head h2{font-size:clamp(30px, 5vw, 46px); font-weight:600; letter-spacing:-.035em}
+.sec-head p{max-width:60ch; color:var(--muted); font-size:16px}
+.lede{max-width:66ch}
+
+.grid-2{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:18px}
+.grid-3{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:18px}
+@media (max-width:860px){ .grid-3{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:640px){ .grid-2, .grid-3{grid-template-columns:1fr} }
+
+.win h3{font-size:17px; font-weight:600; letter-spacing:-.01em; margin-bottom:6px}
+.win p + p{margin-top:10px}
+.muted{color:var(--muted)}
+ul.clean, ol.clean{margin:0; padding-left:1.15em; display:flex; flex-direction:column; gap:6px}
+ul.clean li::marker{color:var(--muted)}
+
+.feature{display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:36px; align-items:center; margin-bottom:34px}
+.feature .side{display:flex; flex-direction:column; gap:14px}
+.feature h3{font-size:22px; font-weight:600; letter-spacing:-.02em}
+@media (max-width:820px){ .feature{grid-template-columns:1fr; gap:20px} }
+
+/* tables */
+.tbl{overflow-x:auto}
+table{width:100%; border-collapse:collapse; font-size:13.5px; line-height:1.45}
+th, td{text-align:left; vertical-align:top; padding:10px 12px; border-bottom:1px solid var(--line)}
+th{font-size:12px; font-weight:600; color:var(--muted); background:var(--win-2); white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.pts, th.pts{text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap}
+td b{font-weight:600}
+.rubric td:first-child{font-weight:600; min-width:150px}
+.rubric td{min-width:170px}
+.lvl{display:inline-block; font-family:var(--mono); font-size:10.5px; padding:0 6px; border-radius:4px; border:1px solid var(--line); color:var(--muted); margin-right:4px}
+.metrics td{color:var(--muted); font-family:var(--mono); font-size:12px}
+.metrics td:first-child{color:var(--ink)}
+
+/* steps */
+.steps{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:12px; counter-reset:s}
+.steps li{counter-increment:s; background:var(--win); border:1px solid var(--line); border-radius:10px; padding:14px 16px; display:flex; flex-direction:column; gap:4px}
+.steps li::before{content:counter(s); font-family:var(--mono); font-size:11px; color:var(--accent); border:1px solid var(--accent); border-radius:999px; width:20px; height:20px; display:grid; place-items:center; margin-bottom:4px}
+.steps b{font-weight:600}
+.steps span{font-size:13.5px; color:var(--muted)}
+@media (max-width:860px){ .steps{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:560px){ .steps{grid-template-columns:1fr} }
+
+.note{display:flex; gap:12px; align-items:flex-start; background:var(--accent-soft); border:1px solid color-mix(in srgb, var(--accent) 35%, transparent); border-radius:12px; padding:14px 16px; font-size:14.5px}
+.note .k{font-family:var(--mono); font-size:13px; flex:none; color:var(--accent)}
+
+/* finder */
+.finder{display:grid; grid-template-columns:190px minmax(0,1fr); min-height:420px}
+.finder-side{background:var(--win-2); border-right:1px solid var(--line); padding:12px 8px; display:flex; flex-direction:column; gap:2px}
+.finder-side .lbl{font-size:10.5px; font-weight:600; color:var(--muted); padding:4px 10px; letter-spacing:.04em}
+.tab{display:flex; align-items:center; gap:9px; text-align:left; font:inherit; font-size:13.5px; color:var(--ink); background:none; border:0; border-radius:7px; padding:7px 10px; cursor:pointer}
+.tab .mini{width:17px; height:13px; border-radius:2px 3px 3px 3px; background:linear-gradient(180deg, var(--folder-2), var(--folder)); position:relative; flex:none; margin-top:3px}
+.tab .mini::before{content:""; position:absolute; left:0; top:-3px; width:7px; height:4px; border-radius:2px 2px 0 0; background:var(--folder)}
+.tab[aria-selected="true"]{background:var(--accent); color:var(--on-accent)}
+.tab:hover:not([aria-selected="true"]){background:var(--line)}
+.finder-main{padding:24px; display:flex; flex-direction:column; gap:20px; min-width:0}
+.panel-head{display:flex; flex-direction:column; gap:6px}
+.panel-head .wk{font-family:var(--mono); font-size:11.5px; color:var(--muted)}
+.panel-head h3{font-size:26px; letter-spacing:-.02em; font-weight:600}
+.panel-head p{color:var(--muted); max-width:62ch}
+.panel-cols{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:20px}
+.box{border:1px solid var(--line); border-radius:10px; padding:14px 16px; display:flex; flex-direction:column; gap:8px}
+.box h4{font-size:12px; font-weight:600; color:var(--muted); letter-spacing:.04em}
+.box.expect{background:var(--accent-soft); border-color:color-mix(in srgb, var(--accent) 35%, transparent)}
+.box ul{font-size:14px}
+@media (max-width:820px){
+  .finder{grid-template-columns:1fr}
+  .finder-side{flex-direction:row; overflow-x:auto; border-right:0; border-bottom:1px solid var(--line)}
+  .finder-side .lbl{display:none}
+  .tab{white-space:nowrap}
+  .panel-cols{grid-template-columns:1fr}
+  .finder-main{padding:18px}
+}
+
+/* videos */
+.watch-h{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
+.watch-h h4{font-size:14px; font-weight:600}
+.watch-h span{font-size:12.5px; color:var(--muted)}
+.vids{display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:14px}
+.vid{display:flex; flex-direction:column; text-decoration:none; color:var(--ink); background:var(--win); border:1px solid var(--line); border-radius:10px; overflow:hidden; box-shadow:var(--shadow); transition:transform .15s ease}
+.vid:hover{transform:translateY(-2px)}
+.vid .vbar{display:flex; align-items:center; gap:6px; height:22px; padding-inline:8px; background:var(--win-2); border-bottom:1px solid var(--line)}
+.vid .vbar i{width:7px; height:7px; border-radius:50%; background:var(--tl-r); display:block}
+.vid .vbar i:nth-child(2){background:var(--tl-y)} .vid .vbar i:nth-child(3){background:var(--tl-g)}
+.vid .vbar em{font-style:normal; font-family:var(--mono); font-size:10px; color:var(--muted); margin-inline:auto; padding-right:28px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.screen{position:relative; aspect-ratio:16/8; background:radial-gradient(120% 100% at 15% 0%, var(--screen-b), var(--screen-a)); display:grid; place-items:center}
+.screen .play{display:inline-flex; align-items:center; gap:6px; font-size:12px; color:#fff; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.35); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); padding:4px 12px; border-radius:999px}
+.screen .ch{position:absolute; left:10px; bottom:8px; font-family:var(--mono); font-size:10.5px; color:rgba(255,255,255,.75)}
+.screen .kind{position:absolute; right:10px; top:8px; font-family:var(--mono); font-size:10px; color:rgba(255,255,255,.75); border:1px solid rgba(255,255,255,.3); border-radius:4px; padding:0 5px}
+.vid .vtxt{padding:10px 12px 12px; display:flex; flex-direction:column; gap:4px}
+.vid .vtxt b{font-size:13.5px; font-weight:600; line-height:1.3}
+.vid .vtxt span{font-size:12.5px; color:var(--muted); line-height:1.4}
+
+/* pipeline */
+.pipe{background:var(--screen-a); color:#d7e3ff; font-family:var(--mono); font-size:12.5px; line-height:1.9; padding:16px 18px; overflow-x:auto}
+.pipe div{display:grid; grid-template-columns:24px 230px minmax(0,1fr); gap:8px; white-space:nowrap}
+.pipe .ok{color:#6ee29a} .pipe .dim{color:#8b9ab8}
+.chips{display:flex; flex-wrap:wrap; gap:8px}
+.chip{font-size:13px; border:1px solid var(--line); background:var(--win); border-radius:999px; padding:4px 12px}
+
+/* hosts */
+.hosts td:first-child{font-weight:600; white-space:nowrap}
+.tag{display:inline-block; font-family:var(--mono); font-size:10.5px; border-radius:4px; padding:0 6px; background:var(--accent-soft); color:var(--accent); white-space:nowrap}
+.tag.warn{background:color-mix(in srgb, var(--warn) 16%, transparent); color:var(--warn)}
+.stack{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:10px; align-items:stretch}
+.stack div{border:1px dashed var(--line); border-radius:10px; padding:12px; display:flex; flex-direction:column; gap:3px; background:var(--win-2)}
+.stack small{font-family:var(--mono); font-size:10.5px; color:var(--muted)}
+.stack b{font-size:15px; font-weight:600}
+.stack span{font-size:12.5px; color:var(--muted)}
+@media (max-width:760px){ .stack{grid-template-columns:repeat(2,minmax(0,1fr))} }
+
+/* weights */
+.weights{display:grid; grid-template-columns:3fr 4fr 3fr; gap:10px}
+.weights div{border-radius:10px; padding:16px; border:1px solid var(--line); background:var(--win-2); display:flex; flex-direction:column; gap:2px}
+.weights b{font-size:34px; font-weight:600; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+.weights span{font-size:13px; color:var(--muted)}
+.weights div.mid{background:var(--accent-soft); border-color:color-mix(in srgb, var(--accent) 35%, transparent)}
+@media (max-width:640px){ .weights{grid-template-columns:1fr} }
+.formula{font-family:var(--mono); font-size:13px; background:var(--win-2); border:1px solid var(--line); border-radius:8px; padding:10px 12px; overflow-x:auto; white-space:nowrap}
+
+/* checklist */
+.check-group{display:flex; flex-direction:column; gap:4px}
+.check-group h4{font-size:12px; font-weight:600; color:var(--muted); letter-spacing:.04em; margin-bottom:4px}
+.ck{display:flex; gap:10px; align-items:flex-start; font-size:14px; padding:5px 0; cursor:pointer}
+.ck input{margin-top:4px; accent-color:var(--accent); width:15px; height:15px; flex:none}
+.ck input:checked + span{color:var(--muted); text-decoration:line-through}
+.progress{font-family:var(--mono); font-size:12px; color:var(--muted)}
+
+/* rubric tabs */
+.seg{display:inline-flex; gap:4px; padding:3px; border:1px solid var(--line); border-radius:999px; background:var(--win-2)}
+.seg button{font:inherit; font-size:13px; border:0; background:none; color:var(--muted); padding:5px 14px; border-radius:999px; cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--win); color:var(--ink); box-shadow:var(--shadow)}
+
+/* faq */
+.faq{max-width:640px; margin:0 auto; display:flex; flex-direction:column; gap:8px}
+.faq details{background:var(--win); border:1px solid var(--line); border-radius:10px}
+.faq summary{list-style:none; cursor:pointer; padding:12px 16px; display:flex; justify-content:space-between; gap:12px; font-size:15px; font-weight:500}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+"; font-size:18px; line-height:1; color:var(--ink); transition:transform .15s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 16px 14px; color:var(--muted); font-size:14px}
+
+/* footer */
+footer{padding-block:96px 40px}
+.foot-cols{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:24px; font-size:13.5px}
+.foot-cols h5{margin:0 0 10px; font-size:13.5px; font-weight:600}
+.foot-cols a{display:block; color:var(--muted); text-decoration:none; padding:2px 0}
+.foot-cols a:hover{color:var(--ink)}
+.foot-cols p{color:var(--muted)}
+@media (max-width:700px){ .foot-cols{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.foldword{display:grid; gap:2px; margin-top:48px}
+.foldword i{display:block; aspect-ratio:5/4; position:relative; border-radius:1px 2px 2px 2px; background:linear-gradient(180deg, var(--folder-2), var(--folder)); margin-top:18%}
+.foldword i::before{content:""; position:absolute; left:0; top:-16%; width:44%; height:18%; border-radius:1px 1px 0 0; background:var(--folder)}
+.foldword b{display:block}
+.foldcap{text-align:center; font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:14px}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   animations
+   Everything here is decoration. The whole block is switched off by the
+   prefers-reduced-motion rule near the top of this stylesheet, and the initial
+   hidden state of a reveal is only applied when motion is welcome, so the page
+   is fully readable either way.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@keyframes rise{from{opacity:0; transform:translateY(18px)} to{opacity:1; transform:none}}
+@keyframes fade{from{opacity:0} to{opacity:1}}
+@keyframes popIn{0%{opacity:0; transform:scale(.92) translateY(10px)} 60%{transform:scale(1.01) translateY(0)} 100%{opacity:1; transform:none}}
+@keyframes drift{0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-9px) rotate(.4deg)}}
+@keyframes driftTilt{0%,100%{transform:rotate(-7deg) translateY(0)} 50%{transform:rotate(-5.4deg) translateY(-7px)}}
+@keyframes blink{0%,45%{opacity:1} 50%,95%{opacity:.15} 100%{opacity:1}}
+@keyframes caret{0%,49%{opacity:1} 50%,100%{opacity:0}}
+@keyframes sweep{0%{background-position:-160% 0} 100%{background-position:260% 0}}
+@keyframes pulseRing{0%{box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent)} 100%{box-shadow:0 0 0 12px rgba(0,0,0,0)}}
+@keyframes wave{0%,100%{transform:translateY(0)} 50%{transform:translateY(-22%)}}
+
+/* --- scroll reveal ------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference){
+  .reveal{opacity:0; transform:translateY(20px); transition:opacity .62s cubic-bezier(.22,.7,.3,1), transform .62s cubic-bezier(.22,.7,.3,1); transition-delay:var(--d,0ms); will-change:opacity, transform}
+  .reveal.in{opacity:1; transform:none}
+  /* a card grid reveals as one wave rather than all at once */
+  .reveal-group > *{opacity:0; transform:translateY(22px) scale(.985); transition:opacity .55s cubic-bezier(.22,.7,.3,1), transform .55s cubic-bezier(.22,.7,.3,1)}
+  .reveal-group.in > *{opacity:1; transform:none}
+  .reveal-group.in > *:nth-child(1){transition-delay:0ms}
+  .reveal-group.in > *:nth-child(2){transition-delay:70ms}
+  .reveal-group.in > *:nth-child(3){transition-delay:140ms}
+  .reveal-group.in > *:nth-child(4){transition-delay:210ms}
+  .reveal-group.in > *:nth-child(5){transition-delay:280ms}
+  .reveal-group.in > *:nth-child(6){transition-delay:350ms}
+  .reveal-group.in > *:nth-child(7){transition-delay:420ms}
+  .reveal-group.in > *:nth-child(8){transition-delay:490ms}
+  .reveal-group.in > *:nth-child(n+9){transition-delay:560ms}
+}
+
+/* --- menu bar ------------------------------------------------------------ */
+.menubar{animation:fade .5s ease both}
+.menubar nav a:not(.brand){position:relative; transition:color .18s ease}
+.menubar nav a:not(.brand)::after{content:""; position:absolute; left:0; right:0; bottom:-3px; height:1.5px; border-radius:2px; background:var(--accent); transform:scaleX(0); transform-origin:left; transition:transform .24s cubic-bezier(.22,.7,.3,1)}
+.menubar nav a:not(.brand):hover::after, .menubar nav a.here::after{transform:scaleX(1)}
+.menubar nav a.here{color:var(--ink)}
+.menubar .glyph svg circle{transition:opacity .3s ease}
+.menubar:hover .glyph svg circle:nth-child(1){animation:blink 1.4s ease-in-out infinite}
+.menubar:hover .glyph svg circle:nth-child(2){animation:blink 1.4s ease-in-out .2s infinite}
+.menubar:hover .glyph svg circle:nth-child(3){animation:blink 1.4s ease-in-out .4s infinite}
+.menubar .cta{transition:transform .2s cubic-bezier(.22,.7,.3,1)}
+.menubar .cta:hover{transform:translateX(2px)}
+.clock{transition:color .3s ease}
+.clock.ticked{color:var(--ink)}
+
+/* --- hero ---------------------------------------------------------------- */
+.hero-center > *{animation:rise .8s cubic-bezier(.22,.7,.3,1) both}
+.hero-center .eyebrow-pill{animation-delay:.05s}
+.hero-center h1{animation:popIn 1s cubic-bezier(.22,.7,.3,1) .12s both}
+.hero-center .sub{animation-delay:.3s}
+.hero-center .btns{animation-delay:.42s}
+.hero-center .fine{animation-delay:.54s}
+
+/* each floating desktop piece fades in, then keeps breathing */
+.float{animation:rise .9s cubic-bezier(.22,.7,.3,1) both}
+.float:nth-of-type(1){animation-delay:.5s}
+.float:nth-of-type(2){animation-delay:.6s}
+.float:nth-of-type(3){animation-delay:.68s}
+.float:nth-of-type(4){animation-delay:.76s}
+.float:nth-of-type(5){animation-delay:.84s}
+.float:nth-of-type(6){animation-delay:.58s}
+.float:nth-of-type(7){animation-delay:.66s}
+.float:nth-of-type(8){animation-delay:.74s}
+.float:nth-of-type(9){animation-delay:.82s}
+@media (prefers-reduced-motion: no-preference) and (min-width:1140px){
+  .float > .win{animation:drift 7s ease-in-out infinite}
+  .float:nth-of-type(even) > .win{animation-duration:8.4s; animation-delay:-2s}
+  .float.kao{animation:rise .9s cubic-bezier(.22,.7,.3,1) both, drift 6s ease-in-out 1s infinite}
+  .float.folder{animation:rise .9s cubic-bezier(.22,.7,.3,1) both, drift 6.6s ease-in-out .6s infinite}
+  .float.sticker{animation:rise .9s cubic-bezier(.22,.7,.3,1) both, driftTilt 7.6s ease-in-out .3s infinite}
+}
+/* parallax: the script sets --py from the scroll position */
+@media (min-width:1140px){ .float{translate:0 calc(var(--py, 0px) * var(--pz, 1))} }
+
+/* terminal: lines land one after another and the last one keeps working */
+@media (prefers-reduced-motion: no-preference){
+  .term div{animation:rise .45s ease both}
+  .term div:nth-child(1){animation-delay:1.0s}
+  .term div:nth-child(2){animation-delay:1.35s}
+  .term div:nth-child(3){animation-delay:1.7s}
+  .term div:nth-child(4){animation-delay:2.05s}
+  .term div:nth-child(5){animation-delay:2.4s}
+}
+.term .run{display:inline-block; animation:blink 1s steps(1,end) 2.6s infinite}
+.term div:first-child::after{content:"▌"; margin-left:1px; animation:caret 1.05s steps(1,end) infinite}
+
+/* chat bubbles pop */
+.bubble{animation:popIn .6s cubic-bezier(.22,.7,.3,1) both}
+
+/* folder icons lift on hover */
+.folder, .tab .mini, .folder-ico{transition:transform .25s cubic-bezier(.22,.7,.3,1)}
+.folder:hover .folder-ico{transform:translateY(-4px) rotate(-3deg)}
+.folder:hover span{color:var(--accent)}
+.folder span{transition:color .2s ease}
+.phone-strip .folder{animation:rise .7s ease both}
+.phone-strip .folder:nth-child(2){animation-delay:.1s}
+.phone-strip .folder:nth-child(3){animation-delay:.2s}
+
+/* --- windows ------------------------------------------------------------- */
+.win{transition:transform .3s cubic-bezier(.22,.7,.3,1), box-shadow .3s ease, border-color .3s ease}
+.grid-2 > .win:hover, .grid-3 > .win:hover{transform:translateY(-3px); box-shadow:0 1px 0 rgba(15,20,35,.04), 0 22px 44px -18px rgba(15,20,40,.34)}
+.dots i{transition:transform .25s cubic-bezier(.22,.7,.3,1), filter .25s ease}
+.win:hover .dots i{filter:saturate(1.25) brightness(1.04)}
+.win:hover .dots i:nth-child(1){transform:scale(1.18)}
+.win:hover .dots i:nth-child(2){transform:scale(1.18); transition-delay:.04s}
+.win:hover .dots i:nth-child(3){transform:scale(1.18); transition-delay:.08s}
+
+/* --- roadmap ------------------------------------------------------------- */
+.phase{transition:transform .26s cubic-bezier(.22,.7,.3,1), border-color .26s ease, background .26s ease, box-shadow .26s ease}
+.phase:hover{transform:translateY(-4px); box-shadow:0 14px 28px -16px rgba(15,20,40,.4)}
+.phase h3{transition:color .22s ease}
+.phase:hover h3{color:var(--accent)}
+.phase .wk{transition:color .22s ease}
+.phase:hover .wk{color:var(--accent)}
+.gates span::before{transition:background .3s ease, transform .3s ease}
+.road:hover ~ .gates span::before{background:var(--accent)}
+
+/* --- buttons ------------------------------------------------------------- */
+.btn{transition:transform .2s cubic-bezier(.22,.7,.3,1), filter .2s ease, box-shadow .2s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn svg{transition:transform .25s cubic-bezier(.22,.7,.3,1)}
+.btn:hover svg{transform:translateX(2px) rotate(-4deg)}
+.btn-primary::after{content:""; position:absolute; inset:0; border-radius:inherit; background:linear-gradient(100deg, transparent 20%, rgba(255,255,255,.45) 50%, transparent 80%); background-size:200% 100%; opacity:0; pointer-events:none}
+.btn-primary{position:relative; overflow:hidden}
+.btn-primary:hover::after{opacity:1; animation:sweep .9s ease both}
+
+/* --- section headings ---------------------------------------------------- */
+.sec-head .eyebrow-pill{transition:border-color .3s ease, color .3s ease}
+.sec-head:hover .eyebrow-pill{border-color:var(--accent); color:var(--accent)}
+
+/* --- finder (sprint tabs) ------------------------------------------------ */
+.tab{transition:background .2s ease, color .2s ease, transform .2s cubic-bezier(.22,.7,.3,1)}
+.tab:hover:not([aria-selected="true"]){transform:translateX(3px)}
+.tab[aria-selected="true"] .mini{transform:scale(1.08)}
+@media (prefers-reduced-motion: no-preference){
+  .finder-panel:not([hidden]){animation:rise .45s cubic-bezier(.22,.7,.3,1) both}
+  .finder-panel:not([hidden]) .box{animation:rise .5s cubic-bezier(.22,.7,.3,1) both}
+  .finder-panel:not([hidden]) .box:nth-of-type(2){animation-delay:.08s}
+  .finder-panel:not([hidden]) .vid{animation:popIn .5s cubic-bezier(.22,.7,.3,1) both}
+  .finder-panel:not([hidden]) .vid:nth-child(2){animation-delay:.07s}
+  .finder-panel:not([hidden]) .vid:nth-child(3){animation-delay:.14s}
+  .finder-panel:not([hidden]) .vid:nth-child(4){animation-delay:.21s}
+  .finder-panel:not([hidden]) .vid:nth-child(n+5){animation-delay:.28s}
+}
+
+/* --- video cards --------------------------------------------------------- */
+.vid{transition:transform .26s cubic-bezier(.22,.7,.3,1), box-shadow .26s ease, border-color .26s ease}
+.vid:hover{transform:translateY(-4px); border-color:color-mix(in srgb, var(--accent) 40%, var(--line)); box-shadow:0 18px 34px -18px rgba(15,20,40,.42)}
+.screen{overflow:hidden}
+.screen::before{content:""; position:absolute; inset:0; background:radial-gradient(60% 60% at 50% 50%, rgba(255,255,255,.18), transparent 70%); opacity:0; transition:opacity .3s ease}
+.vid:hover .screen::before{opacity:1}
+.screen .play{transition:transform .26s cubic-bezier(.22,.7,.3,1), background .26s ease}
+.vid:hover .screen .play{transform:scale(1.07); background:rgba(255,255,255,.3)}
+.vid .vtxt b{transition:color .22s ease}
+.vid:hover .vtxt b{color:var(--accent)}
+
+/* --- pipeline ------------------------------------------------------------ */
+.pipe div{transition:background .2s ease}
+.pipe div:hover{background:rgba(255,255,255,.05)}
+.pipe .ok{display:inline-block}
+.pipe.in div .ok{animation:popIn .4s ease both}
+.pipe.in div:nth-child(1) .ok{animation-delay:.05s}
+.pipe.in div:nth-child(2) .ok{animation-delay:.18s}
+.pipe.in div:nth-child(3) .ok{animation-delay:.31s}
+.pipe.in div:nth-child(4) .ok{animation-delay:.44s}
+.pipe.in div:nth-child(5) .ok{animation-delay:.57s}
+.pipe.in div:nth-child(6) .ok{animation-delay:.70s}
+.pipe.in div:nth-child(7) .ok{animation-delay:.83s}
+.pipe.in div:nth-child(8) .ok{animation-delay:.96s}
+
+/* --- chips, tags, stack -------------------------------------------------- */
+.chip{transition:transform .2s cubic-bezier(.22,.7,.3,1), border-color .2s ease, color .2s ease, background .2s ease}
+.chip:hover{transform:translateY(-2px); border-color:var(--accent); color:var(--accent); background:var(--accent-soft)}
+.stack div{transition:transform .24s cubic-bezier(.22,.7,.3,1), border-color .24s ease, background .24s ease}
+.stack div:hover{transform:translateY(-3px); border-style:solid; border-color:var(--accent)}
+
+/* --- tables -------------------------------------------------------------- */
+tbody tr{transition:background .18s ease}
+tbody tr:hover{background:var(--win-2)}
+.lvl{transition:border-color .2s ease, color .2s ease}
+tr:hover .lvl{border-color:var(--accent); color:var(--accent)}
+
+/* --- steps --------------------------------------------------------------- */
+.steps li{transition:transform .24s cubic-bezier(.22,.7,.3,1), box-shadow .24s ease, border-color .24s ease}
+.steps li:hover{transform:translateY(-3px); border-color:var(--accent); box-shadow:0 14px 26px -16px rgba(15,20,40,.34)}
+.steps li::before{transition:background .24s ease, color .24s ease, transform .24s cubic-bezier(.22,.7,.3,1)}
+.steps li:hover::before{background:var(--accent); color:var(--on-accent); transform:scale(1.12)}
+
+/* --- weights (count-up numbers) ------------------------------------------ */
+.weights div{transition:transform .26s cubic-bezier(.22,.7,.3,1), box-shadow .26s ease}
+.weights div:hover{transform:translateY(-3px); box-shadow:0 16px 30px -18px rgba(15,20,40,.36)}
+.weights b{display:block}
+.weights .meter{height:4px; border-radius:999px; background:var(--line); overflow:hidden; margin-top:10px}
+.weights .meter i{display:block; height:100%; border-radius:999px; background:linear-gradient(90deg, var(--btn-top), var(--btn-bot)); transform-origin:left; transform:scaleX(0); transition:transform 1.1s cubic-bezier(.22,.7,.3,1) .15s}
+.weights.in .meter i{transform:scaleX(var(--w,0))}
+
+/* --- note ---------------------------------------------------------------- */
+.note{transition:border-color .25s ease, transform .25s cubic-bezier(.22,.7,.3,1)}
+.note:hover{border-color:var(--accent)}
+.note .k{display:inline-block}
+.note:hover .k{animation:drift 1.6s ease-in-out infinite}
+
+/* --- checklist ----------------------------------------------------------- */
+.ck{border-radius:7px; padding-inline:6px; margin-inline:-6px; transition:background .18s ease}
+.ck:hover{background:var(--win-2)}
+.ck span{transition:color .22s ease, text-decoration-color .22s ease, opacity .22s ease}
+.ck input{transition:transform .18s cubic-bezier(.3,1.5,.5,1)}
+.ck input:checked{transform:scale(1.12); animation:pulseRing .5s ease-out}
+.progress-wrap{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+.progress-bar{flex:1; min-width:120px; height:5px; border-radius:999px; background:var(--line); overflow:hidden}
+.progress-bar i{display:block; height:100%; width:0%; border-radius:999px; background:linear-gradient(90deg, var(--btn-top), var(--btn-bot)); transition:width .45s cubic-bezier(.22,.7,.3,1)}
+
+/* --- rubric segmented control -------------------------------------------- */
+.seg button{transition:background .22s ease, color .22s ease, box-shadow .22s ease, transform .18s ease}
+.seg button:active{transform:scale(.97)}
+@media (prefers-reduced-motion: no-preference){
+  .rubric-panel:not([hidden]){animation:rise .4s cubic-bezier(.22,.7,.3,1) both}
+}
+
+/* --- faq ----------------------------------------------------------------- */
+.faq details{transition:border-color .22s ease, box-shadow .22s ease, background .22s ease}
+.faq details:hover{border-color:color-mix(in srgb, var(--accent) 40%, var(--line))}
+.faq details[open]{border-color:color-mix(in srgb, var(--accent) 45%, var(--line)); box-shadow:0 10px 24px -18px rgba(15,20,40,.4)}
+.faq summary::after{transition:transform .25s cubic-bezier(.22,.7,.3,1), color .2s ease}
+.faq summary:hover::after{color:var(--accent)}
+.faq details[open] summary::after{transform:rotate(45deg)}
+@media (prefers-reduced-motion: no-preference){
+  .faq details[open] p{animation:rise .35s cubic-bezier(.22,.7,.3,1) both}
+}
+
+/* --- footer -------------------------------------------------------------- */
+.foot-cols a{transition:color .2s ease, transform .2s cubic-bezier(.22,.7,.3,1)}
+.foot-cols a:hover{transform:translateX(3px)}
+.foldword i{transition:transform .3s cubic-bezier(.22,.7,.3,1)}
+@media (prefers-reduced-motion: no-preference){
+  .foldword.in i{animation:wave 2.6s ease-in-out infinite; animation-delay:calc(var(--i, 0) * 38ms)}
+}
+.foldword:hover i{transform:translateY(-14%) scale(1.04)}
+
+/* back to top */
+.totop{position:fixed; right:18px; bottom:calc(18px + env(safe-area-inset-bottom,0px)); z-index:40; width:38px; height:38px; border-radius:50%; display:grid; place-items:center; border:1px solid var(--line); background:var(--win); color:var(--ink); box-shadow:var(--shadow); cursor:pointer; opacity:0; transform:translateY(12px) scale(.9); pointer-events:none; transition:opacity .3s ease, transform .3s cubic-bezier(.22,.7,.3,1), border-color .2s ease, color .2s ease}
+.totop.on{opacity:1; transform:none; pointer-events:auto}
+.totop:hover{border-color:var(--accent); color:var(--accent)}
+</style>
+</head>
+<body>
+<header class="menubar">
+  <nav aria-label="Sections">
+    <a class="brand" href="#top">csp221a</a>
+    <a href="#overview">overview</a>
+    <a href="#sprints">sprints</a>
+    <a href="#devops">devops</a>
+    <a href="#deploy">deploy</a>
+    <a href="#rubrics">rubrics</a>
+    <a href="#faq">faq</a>
+  </nav>
+  <span class="glyph" aria-hidden="true">
+    <svg width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="3" cy="7" r="2"/><circle cx="11" cy="7" r="2"/><circle cx="19" cy="7" r="2"/><path d="M5 7h4M13 7h4"/></svg>
+  </span>
+  <div class="right">
+    <span class="clock" id="clock" title="Manila time">--:-- --</span>
+    <a class="cta" href="#demo">demo day ↗</a>
+  </div>
+</header>
+
+<main id="top">
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero">
+  <!-- floating desktop pieces (wide screens only) -->
+  <div class="float" style="left:0; top:20px; width:230px">
+    <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">zsh</span></div>
+      <div class="term">
+        <div>$ git push origin feat/crud</div>
+        <div><span class="ok">✓</span> lint</div>
+        <div><span class="ok">✓</span> unit tests <span class="dim">(llm mocked)</span></div>
+        <div><span class="ok">✓</span> build</div>
+        <div><span class="run">●</span> deploy → production</div>
+      </div>
+    </div>
+    <span class="cap">pipeline.log</span>
+  </div>
+  <div class="float kao" style="left:14px; top:218px">( •_•)&gt;⌐■-■</div>
+  <div class="float folder" style="left:20px; top:262px"><div class="folder-ico"></div><span>sprint-1</span></div>
+  <div class="float sticker" style="left:120px; top:240px; width:120px"><b>HELLO</b><small>my name is</small><span>devops</span></div>
+  <div class="float" style="left:0; top:350px"><span class="bubble" style="max-width:220px">how do we ship this by demo day?</span></div>
+
+  <div class="float" style="right:0; top:20px; width:240px">
+    <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">board.app</span></div>
+      <div class="mini-board">
+        <div><h5>to do</h5><p>rag pipeline</p><p>eval set</p></div>
+        <div><h5>doing</h5><p>crud api</p><p>ci cache</p></div>
+        <div><h5>done</h5><p>schema</p><p>live url</p></div>
+      </div>
+    </div>
+    <span class="cap">sprint-2-board.png</span>
+  </div>
+  <div class="float kao" style="right:20px; top:196px">ᕦ(ò_óˇ)ᕤ</div>
+  <div class="float folder" style="right:150px; top:200px"><div class="folder-ico"></div><span>demo-day</span></div>
+  <div class="float" style="right:0; top:300px; width:220px">
+    <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">.env.example</span></div>
+      <div class="envfile">AI_API_KEY=<em># never commit</em><br>DATABASE_URL=<br>APP_ENV=production</div>
+    </div>
+  </div>
+
+  <div class="hero-center">
+    <span class="eyebrow-pill">ai engineering · s.y. 2026–2027</span>
+    <h1>csp221a</h1>
+    <p class="sub">the final development project. build it like a real team.</p>
+    <div class="btns">
+      <a class="btn btn-primary" href="#overview">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 1.5h5.5L13 5v9.5H4z"/><path d="M9 1.5V5h4"/></svg>
+        read the guide</a>
+      <a class="btn btn-ghost" href="#devops">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="3" cy="8" r="1.8"/><circle cx="13" cy="4" r="1.8"/><circle cx="13" cy="12" r="1.8"/><path d="M4.7 7.2l6.6-2.4M4.7 8.8l6.6 2.4"/></svg>
+        devops track</a>
+    </div>
+    <p class="fine">4 sprints · 4 consultations · 1 demo day · deployed free on the web</p>
+  </div>
+
+  <div class="phone-strip" aria-hidden="true">
+    <div class="folder"><div class="folder-ico"></div><span>sprint-1</span></div>
+    <div class="folder"><div class="folder-ico"></div><span>pipeline</span></div>
+    <div class="folder"><div class="folder-ico"></div><span>demo-day</span></div>
+  </div>
+
+  <!-- roadmap -->
+  <div class="win roadmap reveal">
+    <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">roadmap — four sprints to demo day</span></div>
+    <div class="win-body">
+      <div class="road reveal-group">
+        <a class="phase" href="#sprint-1" data-go="s1"><span class="wk">week 1</span><h3>sprint 1</h3><p>Walking skeleton deployed, CI runs on every pull request.</p><span class="gate-m">◆ consultation 1</span></a>
+        <a class="phase" href="#sprint-2" data-go="s2"><span class="wk">week 2</span><h3>sprint 2</h3><p>Full CRUD through the API and UI, API tests in CI.</p><span class="gate-m">◆ consultation 2</span></a>
+        <a class="phase" href="#sprint-3" data-go="s3"><span class="wk">week 3</span><h3>sprint 3</h3><p>The AI feature end to end, an eval set, mocked LLM tests.</p><span class="gate-m">◆ consultation 3</span></a>
+        <a class="phase" href="#sprint-4" data-go="s4"><span class="wk">week 4</span><h3>sprint 4</h3><p>Hardening, docs, measured pipeline gains, public URL.</p><span class="gate-m">◆ consultation 4</span></a>
+        <a class="phase final" href="#demo"><span class="wk">final</span><h3>demo day</h3><p>Tagged release on production and a live deploy challenge.</p></a>
+      </div>
+      <div class="gates" aria-hidden="true"><span>consultation 1</span><span>consultation 2</span><span>consultation 3</span><span>consultation 4</span><span class="none"></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="sec-head reveal">
+    <span class="eyebrow-pill">overview</span>
+    <h2>your pitch becomes a real product</h2>
+    <p>For the rest of the term your team builds, ships, and presents the full-stack AI application you pitched, the same way a professional software team works.</p>
+  </div>
+
+  <div class="feature">
+    <div class="side">
+      <span class="bubble left">who are we presenting to?</span>
+      <h3>the course staff is your client</h3>
+      <p class="muted">Treat the instructor as your client and engineering leadership. Weekly consultations are your sprint reviews. Demo Day is where you show a working product to stakeholders and defend the decisions you made to get there.</p>
+      <p class="muted">By the end you should have a deployed product, a repository that tells the story of how it was built, and a presentation that proves you understand what you made.</p>
+    </div>
+    <div class="grid-2 reveal-group">
+      <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">choose-anything.md</span></div><div class="win-body"><h3>you choose everything</h3><p class="muted">Domain, framework, language, database, AI provider, host, and CI/CD tool are yours. There is no approved list. Be ready to justify every choice.</p></div></div>
+      <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">process-is-graded.md</span></div><div class="win-body"><h3>process is graded</h3><p class="muted">A polished app built in the last three days scores lower than a steady build with a visible history of planning, reviews, and deploys.</p></div></div>
+      <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">one-devops-engineer.md</span></div><div class="win-body"><h3>one devops engineer</h3><p class="muted">One teammate owns the CI/CD workflow and is graded on how well they design, automate, optimize, and manage it.</p></div></div>
+      <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">ship-continuously.md</span></div><div class="win-body"><h3>you ship continuously</h3><p class="muted">From Sprint 1 your app lives on the web, and every merge to main moves through an automated pipeline.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="sec-head reveal">
+    <span class="eyebrow-pill">team</span>
+    <h2>roles</h2>
+    <p>Every team has exactly one DevOps Engineer. Everyone else is a Developer, and how you split development work is up to you. Declare roles in your README and at your first consultation.</p>
+  </div>
+  <div class="grid-2 reveal-group">
+    <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">devops-engineer.role</span></div>
+      <div class="win-body">
+        <h3>the devops engineer <span class="tag">required</span></h3>
+        <p class="muted">Owns the path from a developer's commit to a running production app: the pipeline, environments, secrets, deployments, and the numbers that show how fast and reliably the team ships.</p>
+        <p class="muted">They are not the team's backup coder. They may write application code, but their individual grade comes only from the CI/CD rubric.</p>
+      </div>
+    </div>
+    <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">developers.role</span></div>
+      <div class="tbl reveal"><table>
+        <thead><tr><th>common split</th><th>typical ownership</th></tr></thead>
+        <tbody>
+          <tr><td><b>Backend / API</b></td><td>API design, validation, database access, error handling</td></tr>
+          <tr><td><b>AI Engineer</b></td><td>LLM integration, prompts, RAG or tools, output validation, evals</td></tr>
+          <tr><td><b>Frontend</b></td><td>UI, state, wiring to the API, user-facing error states</td></tr>
+          <tr><td><b>Full-stack</b></td><td>A vertical slice of features end to end</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+  <div class="grid-3 reveal-group" style="margin-top:18px">
+    <div class="win"><div class="win-body"><h3>product owner duty</h3><p class="muted">One person, any role, keeps the backlog prioritized and speaks for the product at consultations. This can rotate weekly.</p></div></div>
+    <div class="win"><div class="win-body"><h3>code review</h3><p class="muted">Every change to main goes through a pull request reviewed by at least one teammate.</p></div></div>
+    <div class="win"><div class="win-body"><h3>honest attribution</h3><p class="muted">Commits, pull requests, and issue assignments are how contribution is measured. Work that isn't in the repository is hard to credit.</p></div></div>
+  </div>
+  <p class="muted" style="text-align:center; margin-top:16px; font-size:13.5px">Roles can change once mid-project with a good reason. Tell the instructor first and document the change.</p>
+</section>
+
+<!-- REQUIREMENTS -->
+<section id="requirements">
+  <div class="sec-head reveal">
+    <span class="eyebrow-pill">requirements</span>
+    <h2>what the finished product must do</h2>
+    <p>The seven requirements from your pitch are now your acceptance criteria. How you meet them is your call.</p>
+  </div>
+  <div class="win reveal"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">acceptance-criteria.csv</span></div>
+    <div class="tbl reveal"><table>
+      <thead><tr><th>#</th><th>requirement</th><th>what we'll look for at demo day</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">1</td><td><b>CRUD on a real database</b></td><td>Create, read, update, and delete on your core resource, working live and persisting across refreshes and redeploys</td></tr>
+        <tr><td class="mono">2</td><td><b>Non-trivial AI/LLM feature</b></td><td>RAG, tool calling, structured extraction, or an agentic flow that does real work in the app</td></tr>
+        <tr><td class="mono">3</td><td><b>Backend API (REST or GraphQL)</b></td><td>The frontend never calls the LLM or database directly; the backend owns AI and data logic</td></tr>
+        <tr><td class="mono">4</td><td><b>Frontend wired to the backend</b></td><td>Real data in the UI, with loading, empty, and error states handled</td></tr>
+        <tr><td class="mono">5</td><td><b>Relational database design</b></td><td>2+ related tables or collections with a relationship the app actually uses</td></tr>
+        <tr><td class="mono">6</td><td><b>Environment and secrets</b></td><td>No secrets in the repository or its history, a complete .env.example, secrets set per environment</td></tr>
+        <tr><td class="mono">7</td><td><b>Error handling</b></td><td>Graceful behavior when the LLM times out, fails, or returns bad output, and when clients send malformed requests</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="grid-2 reveal-group" style="margin-top:18px">
+    <div class="note reveal"><span class="k">rule</span><span>Your backend must do something with the AI's output before it reaches the frontend: validate, transform, store, trigger a next step, or reject and retry. Pure pass-through fails requirement 2.</span></div>
+    <div class="note reveal"><span class="k">tip</span><span>The requirements are a floor. Higher scores come from depth: an AI feature you've measured, an API that handles edge cases, a schema that survives tough questions. Scope changes are fine; log them.</span></div>
+  </div>
+</section>
+
+<!-- SPRINTS -->
+<section id="sprints">
+  <div class="sec-head reveal">
+    <span class="eyebrow-pill">lifecycle</span>
+    <h2>four sprints, one loop</h2>
+    <p>Each one-week sprint ends with a consultation. The goals describe a healthy pace, not gates. If your project needs a different order, explain why at consultation.</p>
+  </div>
+
+  <ol class="steps reveal-group">
+    <li><b>sprint planning</b><span>Pick the week's work from the backlog. Break it into issues of a day or two, each with an owner.</span></li>
+    <li><b>build in branches</b><span>One branch per issue. Work lands through a pull request that passes the pipeline and gets a teammate's review.</span></li>
+    <li><b>async standups</b><span>Two to three times a week in your team channel: done, next, blocked. Keep them as evidence.</span></li>
+    <li><b>continuous deployment</b><span>Merged work deploys automatically. Production always reflects main.</span></li>
+    <li><b>sprint review</b><span>The consultation: demo what's deployed, walk the board, present the pipeline report.</span></li>
+    <li><b>retrospective</b><span>A short written retro in your sprint log: what went well, what didn't, one change for next sprint.</span></li>
+  </ol>
+  <div class="note reveal" style="margin-top:14px"><span class="k">done =</span><span>merged to main through a reviewed pull request, passed the pipeline, deployed, and checked in the deployed environment. "Works on my machine" is not done.</span></div>
+
+  <div class="win reveal" style="margin-top:28px">
+    <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title" id="finder-title">~/csp221a/sprint-1</span></div>
+    <div class="finder">
+      <div class="finder-side" role="tablist" aria-label="Sprints">
+        <span class="lbl">favorites</span>
+        <button class="tab" role="tab" id="tab-s1" aria-controls="p-s1" aria-selected="true" data-tab="s1" data-path="sprint-1"><span class="mini"></span>sprint-1</button>
+        <button class="tab" role="tab" id="tab-s2" aria-controls="p-s2" aria-selected="false" data-tab="s2" data-path="sprint-2"><span class="mini"></span>sprint-2</button>
+        <button class="tab" role="tab" id="tab-s3" aria-controls="p-s3" aria-selected="false" data-tab="s3" data-path="sprint-3"><span class="mini"></span>sprint-3</button>
+        <button class="tab" role="tab" id="tab-s4" aria-controls="p-s4" aria-selected="false" data-tab="s4" data-path="sprint-4"><span class="mini"></span>sprint-4</button>
+      </div>
+
+      <div class="finder-main">
+        <!-- sprint 1 -->
+        <div role="tabpanel" id="p-s1" aria-labelledby="tab-s1" class="finder-panel" style="display:flex; flex-direction:column; gap:20px">
+          <div class="panel-head"><span class="wk" id="sprint-1">week 1</span><h3>foundation and walking skeleton</h3><p>A thin, deployed version of the whole stack, end to end, even if it does almost nothing yet.</p></div>
+          <div class="panel-cols">
+            <div class="box"><h4>build this week</h4><ul class="clean">
+              <li>Repository with README, branch strategy, .gitignore, and .env.example</li>
+              <li>Backlog created from your pitch, with issues for every requirement</li>
+              <li>Database schema implemented and migrated</li>
+              <li>A minimal frontend calling one backend endpoint that reads from the database</li>
+              <li>First CI pipeline on every pull request: install, lint, build</li>
+              <li>First deployment to a live URL, triggered by the pipeline</li>
+              <li>One test call to your AI provider from the backend to confirm keys work</li>
+            </ul></div>
+            <div class="box expect"><h4>consultation 1 checks</h4><ul class="clean">
+              <li>Roles declared and backlog created</li>
+              <li>Schema migrated</li>
+              <li>Walking skeleton on a live URL</li>
+              <li>CI running on pull requests</li>
+            </ul></div>
+          </div>
+          <div class="watch-h"><h4>watch this sprint</h4><span>team workflow, git, and data modeling</span></div>
+          <div class="vids">
+            <a class="vid" href="https://www.youtube.com/watch?v=RGOj5yH7evk" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>git-github-crash-course.mov</em></span><span class="screen"><span class="kind">course</span><span class="play">▶ play video</span><span class="ch">freeCodeCamp.org</span></span><span class="vtxt"><b>Git and GitHub for Beginners</b><span>Branches, pull requests, and merging: the workflow your whole team runs on.</span></span></a>
+            <a class="vid" href="https://www.youtube.com/watch?v=XU0llRltyFM" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>intro-to-scrum.mov</em></span><span class="screen"><span class="kind">short</span><span class="play">▶ play video</span><span class="ch">Axosoft</span></span><span class="vtxt"><b>Intro to Scrum in Under 10 Minutes</b><span>Backlogs, sprints, standups, and reviews, the loop this project follows.</span></span></a>
+            <a class="vid" href="https://www.youtube.com/watch?v=ztHopE5Wnpc" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>database-design.mov</em></span><span class="screen"><span class="kind">course</span><span class="play">▶ play video</span><span class="ch">freeCodeCamp.org</span></span><span class="vtxt"><b>Database Design Course</b><span>Keys, relationships, and normalization before you migrate your schema.</span></span></a>
+          </div>
+        </div>
+
+        <!-- sprint 2 -->
+        <div role="tabpanel" id="p-s2" aria-labelledby="tab-s2" class="finder-panel" hidden style="display:flex; flex-direction:column; gap:20px">
+          <div class="panel-head"><span class="wk" id="sprint-2">week 2</span><h3>core resource and api</h3><p>Full CRUD on your core resource, through a real API, visible in a real UI.</p></div>
+          <div class="panel-cols">
+            <div class="box"><h4>build this week</h4><ul class="clean">
+              <li>All CRUD endpoints for the core resource, with request validation</li>
+              <li>The relationship between your tables used in real features</li>
+              <li>Screens to create, view, edit, and delete records</li>
+              <li>Automated API tests running in the pipeline</li>
+              <li>Separate environments taking shape, such as preview or staging next to production</li>
+            </ul></div>
+            <div class="box expect"><h4>consultation 2 checks</h4><ul class="clean">
+              <li>Full CRUD through the API and the UI</li>
+              <li>API tests running in the pipeline</li>
+              <li>Every merge deploys automatically</li>
+            </ul></div>
+          </div>
+          <div class="watch-h"><h4>watch this sprint</h4><span>apis and testing</span></div>
+          <div class="vids">
+            <a class="vid" href="https://www.youtube.com/watch?v=-MTSQjw5DrM" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>restful-apis.mov</em></span><span class="screen"><span class="kind">short</span><span class="play">▶ play video</span><span class="ch">Fireship</span></span><span class="vtxt"><b>RESTful APIs in 100 Seconds</b><span>Resources, verbs, and status codes, plus a quick Node/Express build.</span></span></a>
+            <a class="vid" href="https://www.youtube.com/watch?v=0sOvCWFmrtA" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>python-api-development.mov</em></span><span class="screen"><span class="kind">course</span><span class="play">▶ play video</span><span class="ch">freeCodeCamp.org</span></span><span class="vtxt"><b>Python API Development</b><span>A full FastAPI + Postgres build with auth, tests, and deployment. Use the chapters you need.</span></span></a>
+            <a class="vid" href="https://www.youtube.com/watch?v=cHYq1MRoyI0" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>pytest-tutorial.mov</em></span><span class="screen"><span class="kind">course</span><span class="play">▶ play video</span><span class="ch">freeCodeCamp.org</span></span><span class="vtxt"><b>Pytest Tutorial</b><span>Writing the tests your pipeline will run on every pull request.</span></span></a>
+          </div>
+        </div>
+
+        <!-- sprint 3 -->
+        <div role="tabpanel" id="p-s3" aria-labelledby="tab-s3" class="finder-panel" hidden style="display:flex; flex-direction:column; gap:20px">
+          <div class="panel-head"><span class="wk" id="sprint-3">week 3</span><h3>the ai feature</h3><p>Your AI feature working end to end, with the backend processing its output.</p></div>
+          <div class="panel-cols">
+            <div class="box"><h4>build this week</h4><ul class="clean">
+              <li>The AI feature integrated through the backend: structured output, tool calling, retrieval, or multi-step logic</li>
+              <li>Backend validation, transformation, or storage of the AI's output</li>
+              <li>A small evaluation set of example inputs with expected outputs or acceptance checks</li>
+              <li>Mocked LLM calls in automated tests so CI doesn't depend on a paid live API</li>
+              <li>First pass at AI error handling: timeouts, provider errors, malformed output</li>
+            </ul></div>
+            <div class="box expect"><h4>consultation 3 checks</h4><ul class="clean">
+              <li>AI feature working end to end</li>
+              <li>Backend processing of AI output</li>
+              <li>A small evaluation set</li>
+              <li>Mocked LLM tests in CI</li>
+            </ul></div>
+          </div>
+          <div class="watch-h"><h4>watch this sprint</h4><span>llms, rag, structured output, agents</span></div>
+          <div class="vids">
+            <a class="vid" href="https://www.youtube.com/watch?v=zjkBMFhNj_g" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>intro-to-llms.mov</em></span><span class="screen"><span class="kind">talk</span><span class="play">▶ play video</span><span class="ch">Andrej Karpathy</span></span><span class="vtxt"><b>Intro to Large Language Models</b><span>What the model you're calling actually is, and where it fails.</span></span></a>
+            <a class="vid" href="https://www.youtube.com/watch?v=sVcwVQRHIc8" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>rag-from-scratch.mov</em></span><span class="screen"><span class="kind">course</span><span class="play">▶ play video</span><span class="ch">freeCodeCamp.org</span></span><span class="vtxt"><b>Learn RAG From Scratch</b><span>Indexing, retrieval, and generation, taught by a LangChain engineer.</span></span></a>
+            <a class="vid" href="https://www.youtube.com/watch?v=yj-wSRJwrrc" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>pydantic-is-all-you-need.mov</em></span><span class="screen"><span class="kind">talk</span><span class="play">▶ play video</span><span class="ch">AI Engineer</span></span><span class="vtxt"><b>Pydantic Is All You Need</b><span>Validating LLM output against a schema before your backend trusts it.</span></span></a>
+            <a class="vid" href="https://www.youtube.com/watch?v=sal78ACtGTc" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>agentic-workflows.mov</em></span><span class="screen"><span class="kind">talk</span><span class="play">▶ play video</span><span class="ch">Sequoia Capital</span></span><span class="vtxt"><b>What's Next for AI Agentic Workflows</b><span>Andrew Ng on reflection, tool use, and planning patterns for multi-step flows.</span></span></a>
+          </div>
+        </div>
+
+        <!-- sprint 4 -->
+        <div role="tabpanel" id="p-s4" aria-labelledby="tab-s4" class="finder-panel" hidden style="display:flex; flex-direction:column; gap:20px">
+          <div class="panel-head"><span class="wk" id="sprint-4">week 4</span><h3>hardening, polish, and release</h3><p>A product you'd be comfortable handing to a real user, live on a public URL.</p></div>
+          <div class="panel-cols">
+            <div class="box"><h4>build this week</h4><ul class="clean">
+              <li>Complete error handling for AI failures and malformed requests</li>
+              <li>UI polish: loading states, empty states, readable error messages</li>
+              <li>Security review: no secrets in history, input limits, rate or cost guards on AI endpoints</li>
+              <li>Pipeline optimization with before-and-after numbers</li>
+              <li>Docs finished: README, architecture diagram, API reference, setup guide</li>
+              <li>Production deployed on a free host with a public URL (<a href="#deploy">see hosting</a>)</li>
+              <li>A tagged release, such as v1.0.0, with a changelog</li>
+            </ul></div>
+            <div class="box expect"><h4>consultation 4 checks</h4><ul class="clean">
+              <li>Release candidate live on a public URL</li>
+              <li>Error handling complete</li>
+              <li>Docs drafted</li>
+              <li>Pipeline gains measured</li>
+              <li>Rollback tested</li>
+            </ul></div>
+          </div>
+          <div class="watch-h"><h4>watch this sprint</h4><span>security and test discipline</span></div>
+          <div class="vids">
+            <a class="vid" href="https://www.youtube.com/watch?v=4YOpILi9Oxs" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>security-risks.mov</em></span><span class="screen"><span class="kind">short</span><span class="play">▶ play video</span><span class="ch">Fireship</span></span><span class="vtxt"><b>7 Security Risks You Should Never Take</b><span>Leaked keys, injection, and other mistakes to check before release.</span></span></a>
+            <a class="vid" href="https://www.youtube.com/watch?v=Jv2uxzhPFl4" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>tdd-intro.mov</em></span><span class="screen"><span class="kind">short</span><span class="play">▶ play video</span><span class="ch">Fireship</span></span><span class="vtxt"><b>Test-Driven Development Intro</b><span>Write the failing test first, then fix the bug. Useful while hardening.</span></span></a>
+            <a class="vid" href="https://www.youtube.com/watch?v=Gjnup-PuquQ" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>docker-100s.mov</em></span><span class="screen"><span class="kind">short</span><span class="play">▶ play video</span><span class="ch">Fireship</span></span><span class="vtxt"><b>Docker in 100 Seconds</b><span>Enough container basics to follow your host's deploy settings.</span></span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEVOPS -->
+<section id="devops">
+  <div class="sec-head reveal">
+    <span class="eyebrow-pill">devops track</span>
+    <h2>build, run, and improve the pipeline</h2>
+    <p>The DevOps Engineer is graded on one question: how well did you build, run, and improve the system that takes your team's code to production? Any CI/CD platform, any host. What's graded is the design, the automation, the measured improvement, and the evidence.</p>
+  </div>
+
+  <div class="grid-3 reveal-group">
+    <div class="win"><div class="win-body"><h3>pipeline design</h3><p class="muted">Check every pull request and deploy every merge to main with no manual steps.</p></div></div>
+    <div class="win"><div class="win-body"><h3>environments</h3><p class="muted">Production at minimum, ideally staging or per-PR previews, each with its own config and secrets.</p></div></div>
+    <div class="win"><div class="win-body"><h3>secrets</h3><p class="muted">Nothing secret enters the repo. Inject secrets from your CI or host's secret store, scoped per environment.</p></div></div>
+    <div class="win"><div class="win-body"><h3>quality gates</h3><p class="muted">Protected main branch, required checks, and required review before merge.</p></div></div>
+    <div class="win"><div class="win-body"><h3>release and rollback</h3><p class="muted">Know how to roll production back to the last good version, and prove you can.</p></div></div>
+    <div class="win"><div class="win-body"><h3>measurement</h3><p class="muted">Track pipeline performance weekly and back every optimization with numbers.</p></div></div>
+  </div>
+
+  <div class="feature" style="margin-top:40px">
+    <div class="side">
+      <span class="bubble left">what should our pipeline look like?</span>
+      <h3>a mature pipeline, for reference</h3>
+      <p class="muted">This is a reference, not a required template. Build the stages your project needs, in an order that fails fast: cheap checks before expensive ones.</p>
+    </div>
+    <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">.github/workflows/ci.yml (example stages)</span></div>
+      <div class="pipe reveal">
+        <div><span class="ok">✓</span><span>install</span><span class="dim">dependencies, cached</span></div>
+        <div><span class="ok">✓</span><span>lint + format</span><span class="dim">cheapest check first</span></div>
+        <div><span class="ok">✓</span><span>type check</span><span class="dim">if your language has one</span></div>
+        <div><span class="ok">✓</span><span>unit tests</span><span class="dim">LLM calls mocked</span></div>
+        <div><span class="ok">✓</span><span>build</span><span class="dim">bundle, image, or both</span></div>
+        <div><span class="ok">✓</span><span>integration tests</span><span class="dim">against a test database</span></div>
+        <div><span class="ok">✓</span><span>security checks</span><span class="dim">dependency audit, secret scan</span></div>
+        <div><span class="ok">✓</span><span>deploy preview / staging</span><span class="dim">per pull request if you can</span></div>
+        <div><span class="ok">✓</span><span>smoke tests</span><span class="dim">against the deployed env</span></div>
+        <div><span class="ok">✓</span><span>deploy production</span><span class="dim">on merge to main</span></div>
+        <div><span class="ok">✓</span><span>health check + notify</span><span class="dim">tell the team it shipped</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2 reveal-group">
+    <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">optimization-levers.txt</span></div>
+      <div class="win-body">
+        <p class="muted" style="margin-bottom:12px">Make the pipeline measurably faster and more reliable over the four sprints. Common techniques:</p>
+        <div class="chips reveal-group">
+          <span class="chip">dependency + build caching</span><span class="chip">parallel jobs</span><span class="chip">fail-fast stage order</span><span class="chip">path filters</span><span class="chip">cancel outdated runs</span><span class="chip">container layer caching</span><span class="chip">smaller base images</span><span class="chip">split slow test suites</span><span class="chip">fix flaky tests</span>
+        </div>
+      </div>
+    </div>
+    <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">ai-specific.md</span></div>
+      <div class="win-body"><ul class="clean">
+        <li><b>Cost.</b> Mock the provider in unit tests; keep live calls to a small scheduled smoke test.</li>
+        <li><b>Prompts are code.</b> When a prompt changes, run the eval set automatically and report whether quality held.</li>
+        <li><b>Non-determinism.</b> Test the shape and validity of output, not exact wording.</li>
+        <li><b>Outages.</b> A provider outage shouldn't block deploys of unrelated changes.</li>
+        <li><b>Key hygiene.</b> Separate keys per environment, with spending limits on non-production keys.</li>
+      </ul></div>
+    </div>
+  </div>
+
+  <div class="win reveal" style="margin-top:18px"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">pipeline-metrics-log.md · update before every consultation</span></div>
+    <div class="tbl reveal"><table class="metrics">
+      <thead><tr><th>week</th><th>avg PR pipeline (min)</th><th>main pipeline (min)</th><th>success rate (%)</th><th>prod deploys</th><th>lead time, merge→live (min)</th><th>failed deploys</th><th>time to recover (min)</th><th>change made</th></tr></thead>
+      <tbody>
+        <tr><td>sprint 1</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td>sprint 2</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td>sprint 3</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td>sprint 4</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+      </tbody>
+    </table></div>
+    <div class="win-body" style="padding-top:12px; font-size:13px" ><span class="muted">Template to copy into your repo. These measures are adapted from <a href="https://dora.dev/guides/dora-metrics-four-keys" target="_blank" rel="noopener">DORA's software delivery metrics</a>, which industry teams use to gauge delivery performance.</span></div>
+  </div>
+
+  <div class="grid-2 reveal-group" style="margin-top:18px">
+    <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">devops-submits.md</span></div>
+      <div class="win-body"><ul class="clean">
+        <li>Pipeline configuration files in the repository</li>
+        <li>PIPELINE.md: each stage, why it exists, and its trigger</li>
+        <li>A pipeline diagram</li>
+        <li>The completed metrics log</li>
+        <li>An optimization log with before-and-after numbers</li>
+        <li>A deploy and rollback runbook any teammate could follow</li>
+        <li>An incident log with short postmortems</li>
+      </ul></div>
+    </div>
+    <div class="note reveal" style="align-self:start"><span class="k">grade</span><span>What separates an excellent DevOps grade from a passing one is evidence of improvement. A pipeline that ends at 4 minutes because you brought it down from 14, with a log showing how, beats one set up in Sprint 1 and never touched.</span></div>
+  </div>
+
+  <div class="watch-h reveal" style="margin-top:34px; margin-bottom:14px"><h4>watch for the devops engineer</h4><span>ci/cd, github actions, containers</span></div>
+  <div class="vids reveal-group">
+    <a class="vid" href="https://www.youtube.com/watch?v=scEDHsr3APg" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>cicd-100s.mov</em></span><span class="screen"><span class="kind">short</span><span class="play">▶ play video</span><span class="ch">Fireship</span></span><span class="vtxt"><b>DevOps CI/CD Explained in 100 Seconds</b><span>Start here: the whole idea in under two minutes.</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=R8_veQiYBjI" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>github-actions-tutorial.mov</em></span><span class="screen"><span class="kind">tutorial</span><span class="play">▶ play video</span><span class="ch">TechWorld with Nana</span></span><span class="vtxt"><b>GitHub Actions Tutorial</b><span>Workflows, runners, and a CI/CD pipeline that builds and pushes a Docker image.</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=j5Zsa_eOXeY" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>devops-course.mov</em></span><span class="screen"><span class="kind">course</span><span class="play">▶ play video</span><span class="ch">freeCodeCamp.org</span></span><span class="vtxt"><b>DevOps Engineering Course for Beginners</b><span>The wider role: automation, monitoring, and how teams ship.</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=rIrNIzy6U_g" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>docker-concepts.mov</em></span><span class="screen"><span class="kind">short</span><span class="play">▶ play video</span><span class="ch">Fireship</span></span><span class="vtxt"><b>100+ Docker Concepts You Need to Know</b><span>Layers, caching, and image size, the levers behind faster builds.</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=3c-iBn73dDE" target="_blank" rel="noopener"><span class="vbar"><i></i><i></i><i></i><em>docker-full-course.mov</em></span><span class="screen"><span class="kind">course</span><span class="play">▶ play video</span><span class="ch">TechWorld with Nana</span></span><span class="vtxt"><b>Docker Tutorial for Beginners</b><span>The full course, if you decide to containerize your app.</span></span></a>
+  </div>
+</section>
+
+<!-- DEPLOY -->
+<section id="deploy">
+  <div class="sec-head reveal">
+    <span class="eyebrow-pill">hosting</span>
+    <h2>ship it to the web, for free</h2>
+    <p>By the Sprint 4 consultation, your production app must run on a public URL on the web. Deploy as early as Sprint 1 so hosting problems surface while there's time to fix them.</p>
+  </div>
+
+  <div class="win reveal"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">recommended-free-stack</span></div>
+    <div class="win-body">
+      <div class="stack reveal-group">
+        <div><small>frontend</small><b>Vercel</b><span>Free Hobby plan, deploys on every push</span></div>
+        <div><small>backend api</small><b>Render or Railway</b><span>Render's free web service, or Railway's trial</span></div>
+        <div><small>database</small><b>Neon</b><span>Free Postgres that doesn't expire</span></div>
+        <div><small>ci/cd</small><b>GitHub Actions</b><span>Or your host's built-in deploys</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="win reveal" style="margin-top:18px"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">free-tiers.csv · checked october 2026</span></div>
+    <div class="tbl reveal"><table class="hosts">
+      <thead><tr><th>host</th><th>good for</th><th>free tier, in short</th><th>watch out for</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://vercel.com/pricing" target="_blank" rel="noopener">Vercel</a></td><td>Frontends and serverless API routes</td><td>Hobby plan is free, with Git-based deploys and preview URLs</td><td><span class="tag">personal use</span> Hobby is for personal, non-commercial projects. Usage caps can't be raised without upgrading.</td></tr>
+        <tr><td><a href="https://render.com/docs/free" target="_blank" rel="noopener">Render</a></td><td>A long-running backend API</td><td>Free web services with 750 instance hours a month</td><td><span class="tag warn">cold starts</span> Idle services sleep after 15 minutes and take about a minute to wake. Free Postgres expires 30 days after creation, so don't use it for this project's database.</td></tr>
+        <tr><td><a href="https://railway.com/pricing" target="_blank" rel="noopener">Railway</a></td><td>Backend plus attached services</td><td>30-day trial with $5 in credit, then a small free allowance</td><td><span class="tag warn">trial clock</span> Start it when you're ready to deploy so the trial covers Demo Day.</td></tr>
+        <tr><td><a href="https://neon.com/pricing" target="_blank" rel="noopener">Neon</a></td><td>Your Postgres database</td><td>Permanent free plan, no credit card, branches for previews</td><td><span class="tag">compute hours</span> Free compute is capped per project; plenty for a class project.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="grid-3 reveal-group" style="margin-top:18px">
+    <div class="note reveal"><span class="k">1</span><span>Set secrets in each host's dashboard. Your .env never leaves your laptop.</span></div>
+    <div class="note reveal"><span class="k">2</span><span>Hit your backend a few minutes before consultations and Demo Day so a sleeping free service is awake.</span></div>
+    <div class="note reveal"><span class="k">3</span><span>Free tiers change. Confirm the limits on the host's own pricing page before you commit to one.</span></div>
+  </div>
+  <p class="muted" style="text-align:center; margin-top:14px; font-size:13.5px">Any other free host is fine too. You choose, as long as the app is publicly reachable and you can explain the trade-offs.</p>
+</section>
+
+<!-- CONSULTATIONS -->
+<section id="consultations">
+  <div class="sec-head reveal">
+    <span class="eyebrow-pill">weekly</span>
+    <h2>consultations</h2>
+    <p>Each sprint ends with a 15-minute consultation scored out of 20. Show working software, be honest about what slipped, and leave with clear next steps. The whole team attends.</p>
+  </div>
+  <div class="grid-2 reveal-group">
+    <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">agenda · about 15 min</span></div>
+      <div class="tbl reveal"><table>
+        <tbody>
+          <tr><td class="mono">4 min</td><td><b>Live demo</b> of this sprint's work, from the deployed URL</td></tr>
+          <tr><td class="mono">3 min</td><td><b>Board walkthrough</b>: planned, done, slipped, and why</td></tr>
+          <tr><td class="mono">3 min</td><td><b>DevOps report</b>: pipeline changes, metrics, incidents</td></tr>
+          <tr><td class="mono">2 min</td><td><b>Risks and next sprint</b>: top risk and what you'll deliver</td></tr>
+          <tr><td class="mono">3 min</td><td><b>Questions</b>: any member may be asked to explain any code</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">bring.txt</span></div>
+      <div class="win-body"><ul class="clean">
+        <li>The deployed app, open and ready</li>
+        <li>Your project board with this sprint's items</li>
+        <li>The repository with this sprint's pull requests</li>
+        <li>The sprint log: plan, standups, last retro</li>
+        <li>The updated pipeline metrics log</li>
+      </ul></div>
+    </div>
+  </div>
+
+  <div class="win reveal" style="margin-top:18px"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">consultation-rubric · 20 points · each criterion 0–4</span></div>
+    <div class="tbl reveal"><table class="rubric">
+      <thead><tr><th>criterion</th><th>4 · exemplary</th><th>3 · proficient</th><th>2 · developing</th><th>1 · beginning</th></tr></thead>
+      <tbody>
+        <tr><td>Sprint delivery</td><td>All committed items done, or slips explained with sound reasoning and re-planned</td><td>Most items done; slips explained</td><td>About half done; vague on what slipped</td><td>Little planned work done; no clear account</td></tr>
+        <tr><td>Working deployed increment</td><td>New features demoed live on the deployed app, stable throughout</td><td>Works on the deployed app with minor issues</td><td>Partly deployed, or shown on localhost</td><td>No working demo, or screenshots only</td></tr>
+        <tr><td>Engineering process</td><td>Board current; small reviewed PRs; standups and retro logged</td><td>Board mostly current; PRs reviewed; small gaps</td><td>Board stale or PRs merged without review</td><td>No visible process; direct pushes to main</td></tr>
+        <tr><td>Pipeline and DevOps report</td><td>Pipeline improved with metrics to prove it; incidents logged with postmortems</td><td>Pipeline running and maintained; metrics updated</td><td>Pipeline unreliable or metrics missing</td><td>Pipeline mostly manual or broken</td></tr>
+        <tr><td>Risk awareness and planning</td><td>Names the real top risk with a concrete mitigation; specific next-sprint plan</td><td>Reasonable risks and plan</td><td>Generic risks or vague plan</td><td>No risk awareness or plan</td></tr>
+      </tbody>
+    </table></div>
+    <div class="win-body" style="padding-top:12px; font-size:13px"><span class="muted">0 means the item was missing. A member who can't explain their own code may have their share of the score reduced.</span></div>
+  </div>
+</section>
+
+<!-- DEMO DAY -->
+<section id="demo">
+  <div class="sec-head reveal">
+    <span class="eyebrow-pill">final</span>
+    <h2>demo day</h2>
+    <p>30 minutes per team: 20 minutes presenting, 10 minutes of panel questions, scored out of 100. Show it works, show how it works, and show you can keep it running.</p>
+  </div>
+  <div class="grid-2 reveal-group">
+    <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">run-of-show · 20 min</span></div>
+      <div class="tbl reveal"><table>
+        <tbody>
+          <tr><td class="mono">3 min</td><td><b>Problem and product</b>: who it's for and why it's worth using</td></tr>
+          <tr><td class="mono">4 min</td><td><b>Architecture</b>: system diagram, key decisions, trade-offs</td></tr>
+          <tr><td class="mono">6 min</td><td><b>Live demo</b> on production: full CRUD and the AI feature</td></tr>
+          <tr><td class="mono">3 min</td><td><b>AI deep dive</b>: output processing, evaluation, graceful failure</td></tr>
+          <tr><td class="mono">4 min</td><td><b>DevOps and delivery</b>: pipeline, environments, metrics trend, incidents</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:18px; min-width:0">
+      <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">live-deploy-challenge</span></div>
+        <div class="win-body"><p class="muted">At the start of your session the panel asks for a small visible change. A developer makes it, opens a PR, gets it reviewed, and merges. The pipeline must carry it to production before your session ends, with the DevOps Engineer narrating each stage.</p></div>
+      </div>
+      <div class="win"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">panel-may-ask.txt</span></div>
+        <div class="win-body"><ul class="clean">
+          <li>Explain any part of the codebase they pick</li>
+          <li>Show the app when the AI provider fails or returns bad output</li>
+          <li>Send a malformed request to your API</li>
+          <li>Show there are no secrets in your repo history</li>
+          <li>Roll production back to the previous release</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="win reveal" style="margin-top:18px"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">demo-day-rubric · 100 points · team score</span></div>
+    <div class="tbl reveal"><table class="rubric">
+      <thead><tr><th>criterion</th><th class="pts">pts</th><th>excellent (90–100%)</th><th>satisfactory (60–80%)</th><th>needs work (&lt;50%)</th></tr></thead>
+      <tbody>
+        <tr><td>Problem and product clarity</td><td class="pts">10</td><td>Clear user, real problem, convincing value; scope explained</td><td>Problem clear; value generic</td><td>Unclear who it's for or why</td></tr>
+        <tr><td>Live demo, CRUD, and data</td><td class="pts">15</td><td>Full CRUD on production; related data used meaningfully; no crashes</td><td>CRUD works with minor glitches</td><td>Partial CRUD, local-only, or failing</td></tr>
+        <tr><td>AI feature depth</td><td class="pts">20</td><td>Non-trivial AI doing real work; backend acts on output; evaluation shown</td><td>Works and is processed, but shallow or unevaluated</td><td>Pass-through, bolt-on chatbot, or broken</td></tr>
+        <tr><td>Architecture and API design</td><td class="pts">10</td><td>Clean separation; sensible API; trade-offs explained with confidence</td><td>Reasonable with some coupling</td><td>Frontend reaches LLM or DB directly</td></tr>
+        <tr><td>Error handling and resilience</td><td class="pts">10</td><td>AI and request failures handled gracefully in a live drill</td><td>Most handled; rough edges</td><td>Crashes, stack traces, silent failures</td></tr>
+        <tr><td>Security and secrets</td><td class="pts">5</td><td>No secrets in history; complete .env.example; per-env secrets; cost guards</td><td>Handled with minor gaps</td><td>Secrets committed or hard-coded</td></tr>
+        <tr><td>Engineering process</td><td class="pts">10</td><td>Steady sprints, small reviewed PRs, maintained board, logs, retros</td><td>Visible but uneven</td><td>Most work dumped near the deadline</td></tr>
+        <tr><td>Live deploy challenge</td><td class="pts">5</td><td>Change reaches production through the pipeline within the session</td><td>Manual workaround or late</td><td>Not deployed</td></tr>
+        <tr><td>Delivery and Q&amp;A</td><td class="pts">15</td><td>Every member answers on their own work with depth; well paced</td><td>Most answered; some gaps</td><td>Members can't explain their work</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- INDIVIDUAL RUBRICS -->
+<section id="rubrics">
+  <div class="sec-head reveal">
+    <span class="eyebrow-pill">individual</span>
+    <h2>individual track rubrics</h2>
+    <p>Each student also gets an individual score out of 100. Developers use the Developer Contribution rubric. The DevOps Engineer uses the CI/CD Workflow rubric instead.</p>
+    <div class="seg" role="tablist" aria-label="Rubric">
+      <button role="tab" id="rt-dev" aria-controls="rp-dev" aria-selected="true" data-rtab="dev">developer</button>
+      <button role="tab" id="rt-ops" aria-controls="rp-ops" aria-selected="false" data-rtab="ops">devops engineer</button>
+    </div>
+  </div>
+
+  <div class="win reveal rubric-panel" id="rp-dev" role="tabpanel" aria-labelledby="rt-dev"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">developer-contribution · 100 points</span></div>
+    <div class="tbl reveal"><table class="rubric">
+      <thead><tr><th>criterion</th><th class="pts">pts</th><th>excellent (90–100%)</th><th>satisfactory (60–80%)</th><th>needs work (&lt;50%)</th></tr></thead>
+      <tbody>
+        <tr><td>Ownership and scope</td><td class="pts">25</td><td>Owned a substantial, identifiable part of the product end to end</td><td>Meaningful but narrower or unclear ownership</td><td>Minor or unclear contribution</td></tr>
+        <tr><td>Code quality</td><td class="pts">20</td><td>Readable, consistent, tested code that passes the pipeline cleanly</td><td>Works, with gaps in tests or consistency</td><td>Untested, fragile, hard to follow</td></tr>
+        <tr><td>Consistency over time</td><td class="pts">15</td><td>Steady commits and PRs in every sprint</td><td>Most sprints, some bursts</td><td>Most work in the final days</td></tr>
+        <tr><td>Collaboration</td><td class="pts">15</td><td>Thoughtful PR reviews; active in standups; unblocks others</td><td>Reviews and standups done, but light</td><td>Rarely reviews or communicates</td></tr>
+        <tr><td>Technical understanding</td><td class="pts">25</td><td>Explains own code and decisions with depth; reasons about alternatives</td><td>Explains with some gaps</td><td>Can't explain own code</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="win reveal rubric-panel" id="rp-ops" role="tabpanel" aria-labelledby="rt-ops" hidden><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">cicd-workflow · 100 points</span></div>
+    <div class="tbl reveal"><table class="rubric">
+      <thead><tr><th>criterion</th><th class="pts">pts</th><th>excellent (90–100%)</th><th>satisfactory (60–80%)</th><th>needs work (&lt;50%)</th></tr></thead>
+      <tbody>
+        <tr><td>Pipeline design and coverage</td><td class="pts">15</td><td>Well-ordered stages from lint to post-deploy checks, each justified in PIPELINE.md</td><td>Core stages present in a sensible order</td><td>Only builds or deploys, few checks</td></tr>
+        <tr><td>Automation and quality gates</td><td class="pts">10</td><td>Zero manual deploy steps; protected main; required checks and reviews</td><td>Mostly automated; loose gates</td><td>Manual deploys or unprotected main</td></tr>
+        <tr><td>Optimization with measured results</td><td class="pts">20</td><td>Several optimizations with before-and-after numbers; clear downward trend</td><td>Some optimizations, partial evidence</td><td>None, or claims without numbers</td></tr>
+        <tr><td>Environments and secrets</td><td class="pts">10</td><td>Production plus staging or previews; scoped secrets; clean history</td><td>Production plus local; secrets correct</td><td>One environment; secrets mishandled</td></tr>
+        <tr><td>AI-aware pipeline practices</td><td class="pts">10</td><td>Mocked LLM tests; evals on prompt changes; scheduled smoke test; capped keys</td><td>Mocked tests and some AI checks</td><td>Live unguarded AI calls every run</td></tr>
+        <tr><td>Release and rollback</td><td class="pts">10</td><td>Tagged releases with changelog; rollback tested and shown live</td><td>Tagged; rollback documented, untested</td><td>No release or rollback plan</td></tr>
+        <tr><td>Reliability and incidents</td><td class="pts">10</td><td>High success rate; flaky tests fixed; every incident has a postmortem</td><td>Most failures addressed</td><td>Often broken; incidents ignored</td></tr>
+        <tr><td>Metrics, docs, and reporting</td><td class="pts">10</td><td>Metrics log complete each sprint; clear PIPELINE.md, diagram, runbook</td><td>Mostly complete</td><td>Sparse or missing</td></tr>
+        <tr><td>Live performance</td><td class="pts">5</td><td>Narrates the live deploy confidently; answers with depth</td><td>Deploy succeeds; some hesitation</td><td>Struggles to explain or operate it</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- GRADING -->
+<section id="grading">
+  <div class="sec-head reveal">
+    <span class="eyebrow-pill">grading</span>
+    <h2>how it adds up</h2>
+    <p>Team scores and an individual score combine, so a strong team can't carry an absent member and one bad sprint doesn't sink a strong individual.</p>
+  </div>
+  <div class="weights reveal-group">
+    <div style="--w:.30"><b data-count="30">30%</b><span>Weekly consultations · team · 4 × 20 = 80 pts</span><span class="meter" aria-hidden="true"><i></i></span></div>
+    <div class="mid" style="--w:.40"><b data-count="40">40%</b><span>Demo Day · team · 100 pts</span><span class="meter" aria-hidden="true"><i></i></span></div>
+    <div style="--w:.30"><b data-count="30">30%</b><span>Individual track · developer or CI/CD rubric · 100 pts</span><span class="meter" aria-hidden="true"><i></i></span></div>
+  </div>
+  <p class="muted" style="margin:16px 0 8px; font-size:14px">Each component becomes a percentage, then gets weighted. Example: 70/80 on consultations (87.5%), 85/100 on Demo Day, and 90/100 individually:</p>
+  <div class="formula reveal">0.30 × 87.5 + 0.40 × 85 + 0.30 × 90 = 87.25%</div>
+</section>
+
+<!-- DELIVERABLES -->
+<section id="deliverables">
+  <div class="sec-head reveal">
+    <span class="eyebrow-pill">checklist</span>
+    <h2>final deliverables</h2>
+    <p>Submit the repository link and the production URL before code freeze. Ticks are saved in this browser only, as a personal checklist.</p>
+    <span class="progress progress-wrap"><span id="progress">0 of 0 checked</span><span class="progress-bar" aria-hidden="true"><i id="progress-bar"></i></span></span>
+  </div>
+  <div class="win reveal"><div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">submission.todo</span></div>
+    <div class="win-body">
+      <div class="grid-3 reveal-group" id="checklist">
+        <div class="check-group"><h4>PRODUCT</h4>
+          <label class="ck"><input type="checkbox" id="c1"><span>Production URL of the tagged release, on a free public host</span></label>
+          <label class="ck"><input type="checkbox" id="c2"><span>Frontend, backend, and migration source code</span></label>
+          <label class="ck"><input type="checkbox" id="c3"><span>.env.example listing every variable, no real values</span></label>
+          <label class="ck"><input type="checkbox" id="c4"><span>Seed data or setup script for running locally</span></label>
+        </div>
+        <div class="check-group"><h4>DOCUMENTATION</h4>
+          <label class="ck"><input type="checkbox" id="c5"><span>README: what it does, roles, stack, setup</span></label>
+          <label class="ck"><input type="checkbox" id="c6"><span>Architecture diagram</span></label>
+          <label class="ck"><input type="checkbox" id="c7"><span>Database schema diagram or outline</span></label>
+          <label class="ck"><input type="checkbox" id="c8"><span>API reference</span></label>
+          <label class="ck"><input type="checkbox" id="c9"><span>AI feature write-up with evaluation results</span></label>
+          <label class="ck"><input type="checkbox" id="c10"><span>Changelog for the release</span></label>
+        </div>
+        <div class="check-group"><h4>PROCESS</h4>
+          <label class="ck"><input type="checkbox" id="c11"><span>Project board with sprint history</span></label>
+          <label class="ck"><input type="checkbox" id="c12"><span>Sprint log: 4 plans, standups, 4 retros</span></label>
+          <label class="ck"><input type="checkbox" id="c13"><span>Scope change log, if anything changed</span></label>
+          <label class="ck"><input type="checkbox" id="c14"><span>Slide deck</span></label>
+          <label class="ck"><input type="checkbox" id="c15"><span>A way to simulate an AI provider failure</span></label>
+        </div>
+        <div class="check-group"><h4>DEVOPS</h4>
+          <label class="ck"><input type="checkbox" id="c16"><span>Pipeline configuration files</span></label>
+          <label class="ck"><input type="checkbox" id="c17"><span>PIPELINE.md and pipeline diagram</span></label>
+          <label class="ck"><input type="checkbox" id="c18"><span>Completed metrics log</span></label>
+          <label class="ck"><input type="checkbox" id="c19"><span>Optimization log with before/after numbers</span></label>
+          <label class="ck"><input type="checkbox" id="c20"><span>Deploy and rollback runbook</span></label>
+          <label class="ck"><input type="checkbox" id="c21"><span>Incident log with postmortems</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="sec-head reveal">
+    <span class="eyebrow-pill">faq</span>
+    <h2>frequently asked questions</h2>
+    <p>what to know before your first sprint.</p>
+  </div>
+  <div class="faq reveal-group">
+    <details open><summary>can we use tools we didn't use in class?</summary><p>Yes. Use whatever fits your product, and be ready to explain why you chose it over the alternatives.</p></details>
+    <details><summary>can we use ai coding assistants?</summary><p>Yes, the way professional teams do. You're still responsible for every line you merge. If you can't explain it at consultation or Demo Day, it counts against you.</p></details>
+    <details><summary>can we change our project from the pitch?</summary><p>Yes. Record what changed and why in your scope change log, and tell the instructor at your next consultation. Dropping one of the seven core requirements is not allowed.</p></details>
+    <details><summary>does the devops engineer write app code?</summary><p>They may, but their individual grade comes only from the CI/CD rubric. Developers shouldn't offload their own work onto them.</p></details>
+    <details><summary>do we have to pay for hosting or ai?</summary><p>No. The free tiers listed under hosting are enough for this project, and free or trial AI credits or a local model work too. Set spending limits on every key, and mock LLM calls in tests to keep CI costs near zero.</p></details>
+    <details><summary>what if a teammate isn't contributing?</summary><p>Raise it early with the instructor, not at Demo Day. The repository history and board make contribution visible, and individual scores reflect it.</p></details>
+    <details><summary>what if our deploy breaks before a consultation?</summary><p>Present it honestly: the incident, your diagnosis, and the fix or rollback. Handling a failure well is part of what's graded, especially for the DevOps Engineer.</p></details>
+    <details><summary>what if production goes down on demo day?</summary><p>Roll back to the last good release and keep going. A team that recovers calmly scores better than one that pretends nothing happened.</p></details>
+  </div>
+</section>
+
+</div>
+</main>
+
+<button class="totop" id="totop" type="button" aria-label="Back to top" title="Back to top">
+  <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V3"/><path d="M3.5 7.5L8 3l4.5 4.5"/></svg>
+</button>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-cols reveal-group">
+      <div><h5>guide</h5><a href="#overview">overview</a><a href="#team">roles</a><a href="#requirements">requirements</a><a href="#sprints">sprints</a></div>
+      <div><h5>tracks</h5><a href="#devops">devops track</a><a href="#deploy">free hosting</a><a href="#rubrics">individual rubrics</a></div>
+      <div><h5>grading</h5><a href="#consultations">consultations</a><a href="#demo">demo day</a><a href="#grading">weights</a><a href="#deliverables">deliverables</a></div>
+      <div><h5>disclaimer</h5><p>*no secrets in git. ever. if a key leaks, rotate it first, then tell your team.*</p></div>
+    </div>
+    <div class="foldword" id="foldword" aria-label="csp221a" role="img"></div>
+    <p class="foldcap">csp221a · final development project · s.y. 2026–2027</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // menu bar clock, Manila time
+  var clock = document.getElementById('clock');
+  function tick(){
+    try{
+      var next = new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:'Asia/Manila'}).format(new Date());
+      if(next !== clock.textContent){
+        clock.textContent = next;
+        clock.classList.add('ticked');
+        setTimeout(function(){ clock.classList.remove('ticked'); }, 600);
+      }
+    }catch(e){}
+  }
+  tick(); setInterval(tick, 15000);
+
+  // sprint finder tabs
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-tab]'));
+  var title = document.getElementById('finder-title');
+  function show(key, focus){
+    tabs.forEach(function(t){
+      var on = t.dataset.tab === key;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      var p = document.getElementById('p-' + t.dataset.tab);
+      p.hidden = !on;
+      if(on){ title.textContent = '~/csp221a/' + t.dataset.path; if(focus) t.focus(); }
+    });
+  }
+  tabs.forEach(function(t, i){
+    t.addEventListener('click', function(){ show(t.dataset.tab); });
+    t.addEventListener('keydown', function(e){
+      var d = (e.key === 'ArrowDown' || e.key === 'ArrowRight') ? 1 : (e.key === 'ArrowUp' || e.key === 'ArrowLeft') ? -1 : 0;
+      if(!d) return; e.preventDefault();
+      show(tabs[(i + d + tabs.length) % tabs.length].dataset.tab, true);
+    });
+  });
+  document.querySelectorAll('[data-go]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault(); show(a.dataset.go);
+      document.getElementById('sprints').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+    });
+  });
+  var m = /^#sprint-([1-4])$/.exec(location.hash || '');
+  if(m){ show('s' + m[1]); }
+
+  // rubric toggle
+  var rt = Array.prototype.slice.call(document.querySelectorAll('[data-rtab]'));
+  rt.forEach(function(b){
+    b.addEventListener('click', function(){
+      rt.forEach(function(x){
+        var on = x === b;
+        x.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById('rp-' + x.dataset.rtab).hidden = !on;
+      });
+    });
+  });
+
+  // checklist, saved per viewer
+  var KEY = 'csp221a-checklist';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('#checklist input'));
+  var prog = document.getElementById('progress');
+  var saved = {};
+  try{ saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; }catch(e){ saved = {}; }
+  var pbar = document.getElementById('progress-bar');
+  function count(){
+    var n = boxes.filter(function(b){ return b.checked; }).length;
+    prog.textContent = n + ' of ' + boxes.length + ' checked';
+    if(pbar) pbar.style.width = (boxes.length ? (n / boxes.length) * 100 : 0) + '%';
+  }
+  boxes.forEach(function(b){
+    if(saved[b.id]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[b.id] = b.checked;
+      try{ localStorage.setItem(KEY, JSON.stringify(saved)); }catch(e){}
+      count();
+    });
+  });
+  count();
+
+
+  // ── animation layer ──────────────────────────────────────────────────────
+  // One flag decides everything below. When the visitor asks for less motion we
+  // skip every effect and simply mark everything as already revealed.
+  var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var revealables = document.querySelectorAll('.reveal, .reveal-group, .pipe, .foldword, .weights');
+
+  function countUp(el){
+    var target = parseFloat(el.dataset.count), suffix = el.textContent.replace(/[\d.]+/, '');
+    var t0 = null, dur = 900;
+    function step(ts){
+      if(t0 === null) t0 = ts;
+      var k = Math.min((ts - t0) / dur, 1);
+      k = 1 - Math.pow(1 - k, 3);                      // ease out
+      el.textContent = Math.round(target * k) + suffix;
+      if(k < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function landed(el){
+    el.classList.add('in');
+    el.querySelectorAll('[data-count]').forEach(function(n){
+      if(n.dataset.counted) return;
+      n.dataset.counted = '1';
+      if(!calm) countUp(n);
+    });
+  }
+
+  // Reveal on scroll position rather than with an IntersectionObserver: a menu
+  // link or a #hash deep link can jump the page straight past a section, and an
+  // observer is never told about an element that went from below the fold to
+  // above it without ever being on screen. Sweeping the pending list each frame
+  // catches those, so nothing can be left stranded at opacity 0.
+  var pending = Array.prototype.slice.call(revealables);
+
+  function sweep(){
+    if(!pending.length) return;
+    var line = innerHeight * 0.9;
+    pending = pending.filter(function(el){
+      if(el.getBoundingClientRect().top > line) return true;
+      landed(el);
+      return false;
+    });
+  }
+
+  if(calm){
+    pending.forEach(landed);
+    pending = [];
+  }
+
+  // a hidden panel has no position on the page, so reveal that one by hand
+  function forceIn(root){
+    if(!root) return;
+    landed(root);
+    root.querySelectorAll('.reveal, .reveal-group, .weights, .pipe').forEach(landed);
+  }
+  document.querySelectorAll('[data-rtab]').forEach(function(b){
+    b.addEventListener('click', function(){ forceIn(document.getElementById('rp-' + b.dataset.rtab)); });
+  });
+
+  // drifting desktop pieces follow the scroll a little, each at its own depth
+  var floats = Array.prototype.slice.call(document.querySelectorAll('.hero .float'));
+  floats.forEach(function(f, i){ f.style.setProperty('--pz', (0.25 + (i % 4) * 0.22).toFixed(2)); });
+
+  var totop = document.getElementById('totop');
+  var links = Array.prototype.slice.call(document.querySelectorAll('.menubar nav a[href^="#"]:not(.brand)'));
+  var ticking = false;
+  function onScroll(){
+    var y = window.scrollY || 0;
+    if(!calm && innerWidth >= 1140){
+      var py = Math.max(-80, -y * 0.18);
+      floats.forEach(function(f){ f.style.setProperty('--py', py + 'px'); });
+    }
+    if(totop) totop.classList.toggle('on', y > 700);
+    // highlight whichever section the menu bar is sitting over
+    var here = null;
+    links.forEach(function(a){
+      var sec = document.querySelector(a.getAttribute('href'));
+      if(sec && sec.getBoundingClientRect().top <= 90) here = a;
+    });
+    links.forEach(function(a){ a.classList.toggle('here', a === here); });
+    sweep();
+    ticking = false;
+  }
+  addEventListener('scroll', function(){
+    if(ticking) return;
+    ticking = true; requestAnimationFrame(onScroll);
+  }, {passive:true});
+  onScroll();
+
+  if(totop) totop.addEventListener('click', function(){
+    scrollTo({top:0, behavior: calm ? 'auto' : 'smooth'});
+  });
+
+  addEventListener('resize', onScroll, {passive:true});
+  addEventListener('hashchange', function(){ requestAnimationFrame(onScroll); });
+  addEventListener('load', onScroll);          // web fonts can shift the layout
+
+  // footer word built from folders
+  var G = {
+    c:['.###.','#...#','#....','#....','#....','#...#','.###.'],
+    s:['.####','#....','#....','.###.','....#','....#','####.'],
+    p:['####.','#...#','#...#','####.','#....','#....','#....'],
+    '2':['.###.','#...#','....#','...#.','..#..','.#...','#####'],
+    '1':['..#..','.##..','..#..','..#..','..#..','..#..','.###.'],
+    a:['.###.','#...#','#...#','#####','#...#','#...#','#...#']
+  };
+  var word = 'csp221a', fw = document.getElementById('foldword');
+  var cols = word.length * 5 + (word.length - 1);
+  fw.style.gridTemplateColumns = 'repeat(' + cols + ', minmax(0,1fr))';
+  var html = '';
+  for(var r = 0; r < 7; r++){
+    for(var w = 0; w < word.length; w++){
+      var row = G[word[w]][r];
+      for(var c = 0; c < 5; c++){ html += row[c] === '#' ? '<i style="--i:' + (w * 6 + c) + '"></i>' : '<b></b>'; }
+      if(w < word.length - 1) html += '<b></b>';
+    }
+  }
+  fw.innerHTML = html;
+})();
+</script>
+
+</body>
+</html>
